@@ -1,5 +1,6 @@
 import "./App.css";
 import { useMcoExamplePOSTMutation } from "./redux/api/api";
+import Home from './pages/Home'
 
 function App() {
   const [mcoParams, { isLoading, data, error }] = useMcoExamplePOSTMutation();
@@ -13,9 +14,7 @@ function App() {
   return (
     <>
       <div>
-        <h1 onClick={handleMcoParams} className="text-3xl font-bold underline">
-          Hello MCO!
-        </h1>
+       <Home />
       </div>
     </>
   );
