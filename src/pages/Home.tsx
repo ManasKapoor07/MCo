@@ -1,6 +1,9 @@
 import Hero from '@/components/Hero'
 import NavBar from '../components/NavBar'
 import PremiumShowcase from '@/components/PremiumShowcase'
+import CustomerTestimonials from '@/components/CustomerTestimonials'
+import Newsletter from '@/components/Newsletter'
+import Footer from '@/components/Footer'
 
 const Home = () => {
     return (
@@ -8,6 +11,9 @@ const Home = () => {
         <NavBar />
         <Hero />
         <PremiumShowcase />
+        <CustomerTestimonials />
+        <Newsletter />
+        <Footer />
         </div>
     )
 }
