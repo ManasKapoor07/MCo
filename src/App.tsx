@@ -1,24 +1,24 @@
-import "./App.css";
-import { useMcoExamplePOSTMutation } from "./redux/api/api";
-import Home from './pages/Home'
+import { createBrowserRouter, RouterProvider } from "react-router-dom";
+import Layout from "./components/Layout"; // New layout with Header + <Outlet />
+import Home from "./pages/Home";
 import About from "./pages/About";
+import Contact from "./pages/Contact";
+import './App.css';
+
+const router = createBrowserRouter([
+  {
+    path: "/",
+    element: <Layout />,
+    children: [
+      { path: "", element: <Home /> },
+      { path: "about", element: <About /> },
+      { path: "contact", element: <Contact /> },
+    ],
+  },
+]);
 
 function App() {
-  const [mcoParams, { isLoading, data, error }] = useMcoExamplePOSTMutation();
-  const handleMcoParams = () => {
-    mcoParams({
-      id: "id",
-      example: "example",
-      mco: "mco",
-    });
-  };
-  return (
-    <>
-      <div>
-       <Home />
-      </div>
-    </>
-  );
+  return <RouterProvider router={router} />;
 }
 
 export default App;

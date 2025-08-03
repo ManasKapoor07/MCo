@@ -1,4 +1,6 @@
+// Header.tsx
 import { useState } from "react";
+import { Link } from "react-router-dom";
 import { Search } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import { useDispatch } from "react-redux";
@@ -12,6 +14,14 @@ const Header = () => {
     // dispatch or handle searchInput
   };
 
+  const navLinks = [
+    { label: "Home", path: "/" },
+    { label: "About", path: "/about" },
+    { label: "Categories", path: "/categories" },
+    { label: "New Arrivals", path: "/new-arrivals" },
+    { label: "Contact", path: "/contact" },
+  ];
+
   return (
     <header className="bg-white shadow-sm top-0 z-50">
       <div className="max-w-7xl mx-auto px-6">
@@ -23,18 +33,17 @@ const Header = () => {
             </h1>
           </div>
 
-          {/* Spacer to push links + search to right */}
           <div className="flex items-center space-x-10">
-            {/* Navigation links on the right */}
+            {/* Navigation links */}
             <nav className="flex space-x-6">
-              {["Home", "About", "Categories", "New Arrivals", "Contact"].map((label) => (
-                <a
+              {navLinks.map(({ label, path }) => (
+                <Link
                   key={label}
-                  href="#"
+                  to={path}
                   className="font-['Poppins'] text-[clamp(0.8rem,0.6rem+1vw,1rem)] leading-[1.75] tracking-[0] hover:text-gray-800 transition"
                 >
                   {label}
-                </a>
+                </Link>
               ))}
             </nav>
 
@@ -57,3 +66,4 @@ const Header = () => {
 };
 
 export default Header;
+
