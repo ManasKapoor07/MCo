@@ -1,12 +1,13 @@
 import { Outlet } from "react-router-dom";
 import Header from "./Header"; // Your header component
+import Home from "@/pages/Home";
 
-const Layout = () => {
+const Layout = ({ children }) => {
   return (
     <>
-      <Header />
       <main className="">
-        <Outlet />
+        <Header />
+        {children}
       </main>
     </>
   );
