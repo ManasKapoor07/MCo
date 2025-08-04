@@ -44,7 +44,7 @@ const Header = () => {
                 return (
                   <Link
                     key={label}
-                    to={path}
+                    to={path ?? '#'}
                     className={`font-['Poppins'] text-[clamp(0.8rem,0.6rem+1vw,1rem)]  transition relative
                       ${
                         isActive

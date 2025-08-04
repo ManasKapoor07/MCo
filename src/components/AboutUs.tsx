@@ -101,13 +101,13 @@ const AboutUs = () => {
         </div>
       </section>
 
-      <section className="bg-[rgba(68,68,68,0.1)] py-12 -mx-8 ">
-        <div className="max-w-7xl px-20 md:px-24">
+      <section className="bg-[rgba(68,68,68,0.1)] py-12  ">
+        <div className="w-full px-20 md:px-24">
           <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 text-center gap-8 md:divide-x">
             {stats.map((stat, index) => (
               <div
                 key={index}
-                className=" grid grid-cols-1 md:grid-cols-[auto_1fr] items-center gap-4"
+                className=" grid grid-cols-1 md:grid-cols-[1fr] items-center gap-4"
               >
                 <div>
                   <h3 className="text-3xl font-bold text-gray-900 font-[Poppins]">
@@ -117,9 +117,7 @@ const AboutUs = () => {
                     {stat.label}
                   </p>
                 </div>
-                {stat.line && (
-                  <div className="hidden md:block border-l border-gray-700 h-full ml-12 mr-2"></div>
-                )}
+                
               </div>
             ))}
           </div>

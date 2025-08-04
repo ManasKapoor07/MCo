@@ -1,4 +1,3 @@
-import { FC } from "react";
 import { FaFacebookF, FaTwitter, FaInstagram } from "react-icons/fa";
 
 interface TeamMember {
@@ -30,7 +29,7 @@ const teamMembers: TeamMember[] = [
   },
 ];
 
-const TeamGrid: FC = () => {
+const TeamGrid = () => {
   return (
     <div className="bg-white py-12 px-14 sm:px-12 lg:px-16">
       <div className="font-[Poppins] font-semibold text-[46px] leading-[54px] tracking-[0px] text-center px-32 mb-10">

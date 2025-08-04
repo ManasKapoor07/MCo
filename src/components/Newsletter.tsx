@@ -16,9 +16,16 @@ export default function Newsletter() {
         {/* Newsletter container matching the SVG design */}
         <div className="relative bg-[#1447E6] rounded-[20px] px-8 py-12 md:px-8 md:py-16">
           {/* Decorative triangle on the left */}
-          <div className="absolute left-30 top-[2%] transform -translate-y-1/2 rotate-30 hidden md:block">
-            <div className="w-0 h-0 border-l-[30px] border-l-transparent border-r-[30px] border-r-transparent border-b-[50px] border-b-[#F8F8FF]"></div>
-          </div>
+         <div className="absolute left-30 top-[2%] transform -translate-y-1/2 rotate-[30deg] hidden md:block">
+  <svg width="60" height="52" viewBox="0 0 60 52" xmlns="http://www.w3.org/2000/svg">
+    <polygon 
+      points="30,0 60,50 0,50" 
+      fill="#F8F8FF" 
+      stroke="black" 
+      strokeWidth="0.2" />
+  </svg>
+</div>
+
 
           {/* Decorative semicircle on the right */}
           <div className="absolute right-30 bottom-26 hidden lg:block">
