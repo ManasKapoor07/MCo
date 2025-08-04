@@ -98,9 +98,9 @@ export default function CustomerTestimonials() {
             <button
               key={idx}
               onClick={() => setPage(idx)}
-              className={`w-3 h-3 rounded-full transition-colors duration-300 ${
+              className={`w-4 h-4 rounded-full transition-colors duration-300 ${
                 idx === page
-                  ? "bg-slate-900"
+                  ? "bg-blue-700"
                   : "bg-slate-400 hover:bg-slate-600"
               }`}
             />

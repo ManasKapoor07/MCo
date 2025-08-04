@@ -4,7 +4,7 @@
 @custom-variant dark (&:is(.dark *));
 
 #root {
-  width: 100%;
+  width: fit-content;
   margin: 0 auto;
   /* padding: 2rem; */
   text-align: center;

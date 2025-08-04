@@ -4,11 +4,9 @@ import Home from "@/pages/Home";
 
 const Layout = ({ children }) => {
   return (
-    <div className="">
-      <div className="bg-[#F2F8FF] ">
-        <Header />
-        {children}
-      </div>
+    <div className="bg-[#F2F8FF] flex flex-col h-full w-full px-4">
+      <Header />
+      {children}
     </div>
   );
 };
