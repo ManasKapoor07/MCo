@@ -74,7 +74,7 @@ const FAQSection = () => {
           </div>
         </div>
         <img
-        src="/src/assets/Spiral2.png"
+        src="/assets/Spiral2.png"
         alt="Decoration"
         className="absolute bottom-0 left-0 h-1/4 object-cover pointer-events-none z-30 "
       />

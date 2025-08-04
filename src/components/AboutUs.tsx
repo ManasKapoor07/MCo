@@ -9,22 +9,22 @@ const stats = [
 
 const visionItems = [
   {
-    imageUrl: "src/assets/vision1.png",
+    imageUrl: "/assets/vision1.png",
     title: "Innovation First",
     desc: "We continually source the latest in global bathroom trends to bring you smart functionality.",
   },
   {
-    imageUrl: "src/assets/vision2.png",
+    imageUrl: "/assets/vision2.png",
     title: "Built to Last",
     desc: "We continually source the latest in global bathroom trends to bring you smart functionality.",
   },
   {
-    imageUrl: "src/assets/vision3.png",
+    imageUrl: "/assets/vision3.png",
     title: "Personalized Approach",
     desc: "Every child’s journey is unique. Our mission is to provide personalized childcare solutions and consulting.",
   },
   {
-    imageUrl: "src/assets/vision4.png",
+    imageUrl: "/assets/vision4.png",
     title: "Advocacy and Awareness",
     desc: "Our mission extends beyond caring for children to building stronger, healthier communities.",
   },
@@ -45,7 +45,7 @@ const AboutUs = () => {
 
         <div className="grid md:grid-cols-[1fr_1.4fr] items-start gap-18">
           <img
-            src="src\assets\BrandPerson.png"
+            src="/assets/BrandPerson.png"
             alt="Founder"
             className="rounded-xl w-full object-cover shadow-md mt-15"
           />
@@ -53,12 +53,12 @@ const AboutUs = () => {
           <div className="space-y-6">
             <div className="flex justify-between items-start">
               <img
-                src="src\assets\BathroomImage.png"
+                src="/assets/BathroomImage.png"
                 alt="Bathroom Design"
                 className="rounded-xl w-5/9 object-cover shadow-sm"
               />
               <img
-                src="src\assets\WashBasinImage.png"
+                src="/assets/WashBasinImage.png"
                 alt="Washbasin"
                 className="rounded-xl w-1/3 object-cover shadow-sm mt-6"
               />

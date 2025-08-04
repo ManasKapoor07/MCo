@@ -59,7 +59,7 @@ export default function Newsletter() {
                   className="w-9 h-9 p-0 rounded-lg bg-[#1447E6]"
                 >
                   <img
-                    src="src/assets/SubscribeImage.png"
+                    src="/assets/SubscribeImage.png"
                     alt="Subscribe"
                     className="mt-2 object cover"
                   />
