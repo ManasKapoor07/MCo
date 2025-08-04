@@ -1,10 +1,10 @@
 import React from "react";
 import { Button } from "./ui/button";
 
-import HeroImage1 from "../assets/HeroImage1.png";
+import HeroImage1 from "../assets/leftimage.svg";
 import HeroImage2 from "../assets/HeroImage2.png";
 import HeroImage3 from "../assets/HeroImage3.png";
-import HeroImage4 from "../assets/HeroImage4.png";
+import HeroImage4 from "../assets/rightImage.svg";
 
 import BarImage1 from "../assets/BarImage1.png";
 import BarImage2 from "../assets/BarImage2.png";
@@ -40,10 +40,10 @@ const Hero = () => {
 
           {/* Center Box */}
           <div className="w-full p-6 rounded-lg text-center mb-4 flex flex-col items-center justify-center gap-6">
-            <p className="font-[Poppins] font-medium text-5xl leading-tight tracking-[-0.04em] text-gray-700 mb-4">
+            <p className="font-[Poppins] font-medium text-5xl  text-gray-700 mb-2">
               Let Your Space Speak Style
             </p>
-            <p className="font-[Poppins] text-[18px] font-normal uppercase text-gray-600 mb-6">
+            <p className="font-[Poppins] text-[18px] font-normal uppercase text-gray-600 mb-3">
               Explore People’s Most Trusted Sanitary Ware Brands In One Destination.
             </p>
             <Button
