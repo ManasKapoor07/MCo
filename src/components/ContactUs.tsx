@@ -6,7 +6,7 @@ const ContactUs = () => {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-16">
 
         {/* Header with Title & Social Icons */}
-        <div className="grid grid-cols-1 lg:grid-cols-3 items-start">
+        <div className="grid grid-cols-1 lg:grid-cols-2 items-start">
           <div className="lg:col-span-2">
             <p className="text-blue-600 font-semibold uppercase tracking-wide text-sm">
               Contact Us
