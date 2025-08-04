@@ -23,12 +23,12 @@ const Header = () => {
   ];
 
   return (
-    <header className="bg-white shadow-sm top-0 z-50">
-      <div className="max-w-7xl mx-auto px-6">
+    <div className="-mt-4 ">
+      <div className=" mx-auto ">
         <div className="flex justify-between items-center h-16">
           {/* Logo */}
-          <div className="flex-shrink-0">
-            <h1 className="font-[Volkhov] text-3xl leading-tight tracking-tight font-normal text-[clamp(2rem,5vw,3.25rem)]">
+          <div className="flex">
+            <h1 className="font-[Volkhov] text-xl leading-tight tracking-tight font-normal ">
               M&CO.
             </h1>
           </div>
@@ -61,7 +61,7 @@ const Header = () => {
           </div>
         </div>
       </div>
-    </header>
+    </div>
   );
 };
 

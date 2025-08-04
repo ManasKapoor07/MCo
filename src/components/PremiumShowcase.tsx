@@ -11,7 +11,7 @@ export default function PremiumShowcase() {
               className="shadow-lg w-full"
             />
           </div>
-          <div className="text-left mt-2 mt-6">
+          <div className="text-left mt-2 ">
             <div className=" font-normal text-[16px] leading-[100%] tracking-normal text-gray-500">
               New Bathroom Vanity Collection
             </div>

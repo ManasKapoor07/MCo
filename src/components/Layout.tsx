@@ -4,12 +4,12 @@ import Home from "@/pages/Home";
 
 const Layout = ({ children }) => {
   return (
-    <>
-      <main className="">
+    <div className="">
+      <div className="bg-[#F2F8FF] ">
         <Header />
         {children}
-      </main>
-    </>
+      </div>
+    </div>
   );
 };
 
