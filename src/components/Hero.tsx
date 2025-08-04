@@ -3,7 +3,7 @@ import { Button } from "./ui/button";
 
 const Hero = () => {
   return (
-    <div className="w-full">
+    <div className="w-full flex flex-col">
         <div className="w-full min-h-screen flex items-center px-4 py-8 gap-7 box-border">
           {/* Left Column */}
           <div className="w-[33%] h-full flex items-center justify-center">
