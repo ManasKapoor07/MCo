@@ -28,7 +28,7 @@ const ContactUs = () => {
   </div>
 </div>
  <img
-        src="/src/assets/Spiral1.png"
+        src="/assets/Spiral1.png"
         alt="Decoration"
         className="absolute top-120 right-0 h-1/6 object-cover pointer-events-none z-30 -mx-4"
       />

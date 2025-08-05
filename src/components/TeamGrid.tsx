@@ -10,22 +10,22 @@ const teamMembers: TeamMember[] = [
   {
     name: "Hasan Ahmed",
     role: "Adventure master",
-    imageUrl: "src/assets/Person1.png",
+    imageUrl: "/assets/Person1.png",
   },
   {
     name: "Hasan Ahmed",
     role: "Adventure master",
-    imageUrl: "src/assets/Person2.png",
+    imageUrl: "/assets/Person2.png",
   },
   {
     name: "Hasan Ahmed",
     role: "Adventure master",
-    imageUrl: "src/assets/Person3.png",
+    imageUrl: "/assets/Person3.png",
   },
   {
     name: "Hasan Ahmed",
     role: "Adventure master",
-    imageUrl: "src/assets/Person4.png",
+    imageUrl: "/assets/Person4.png",
   },
 ];
 
