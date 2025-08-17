@@ -2,6 +2,7 @@ import { useState } from "react";
 import { Link, useLocation, useSearchParams } from "react-router-dom";
 import { Input } from "@/components/ui/input";
 import { useDispatch } from "react-redux";
+import logoMc from "../assets/logoMc_1.svg";
 
 const Header = () => {
   const [searchInput, setSearchInput] = useState("");
@@ -25,13 +26,14 @@ const Header = () => {
   ];
 
   return (
-    <div className="p-2 px-6">
+    <div className="p-2 px-4">
       <div className="mx-auto">
         <div className="flex justify-between items-center h-16">
-          {/* Logo */}
-          <h1 className="font-[Volkhov] text-3xl leading-tight tracking-tight font-normal">
-            M&CO.
-          </h1>
+          <img
+            src={logoMc}
+            alt="Maheshwar & Co. Logo"
+            className="h-32 w-auto object-contain mt-14"
+          />
 
           <div className="flex items-center space-x-10">
             {/* Navigation links */}
@@ -44,7 +46,7 @@ const Header = () => {
                 return (
                   <Link
                     key={label}
-                    to={path ?? '#'}
+                    to={path ?? "#"}
                     className={`font-['Poppins'] text-[clamp(0.8rem,0.6rem+1vw,1rem)]  transition relative
                       ${
                         isActive
