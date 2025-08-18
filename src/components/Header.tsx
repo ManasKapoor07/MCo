@@ -27,8 +27,8 @@ const Header = () => {
 
   return (
     <header className="sticky top-0 z-50 w-full backdrop-blur-lg ">
-      <div className="mx-auto px-6 justify-between">
-        <div className="flex items-center h-16 w-full">
+      <div className="mx-auto px-6 justify-center items-center">
+        <div className="flex items-center justify-center h-16 w-full">
           {/* Logo */}
           <Link to="/" className="flex items-center mt-2">
             <img
@@ -38,9 +38,9 @@ const Header = () => {
             />
           </Link>
 
-          <div className="flex items-center justify-end w-full space-x-8 ">
+          <div className="flex items-center justify-center w-full space-x-8">
             {/* Navigation links */}
-            <nav className="flex space-x-10 font-medium items-center w-full justify-start ml-32">
+            <nav className="flex space-x-8 font-medium items-center w-full justify-center">
               {navLinks.map(({ label, path, key }) => {
                 const isActive =
                   location.pathname === path ||
@@ -74,7 +74,7 @@ const Header = () => {
                 placeholder="Search products..."
                 value={searchInput}
                 onChange={(e) => setSearchInput(e.target.value)}
-                className="w-64 pl-10 pr-4 py-2 rounded-md bg-gray-50 border border-gray-200 focus:outline-none focus:ring-1 focus:ring-blue-500 shadow-sm"
+                className="w-94 pl-10 pr-4 py-2 rounded-md bg-gray-50 border border-gray-200 focus:outline-none focus:ring-1 focus:ring-blue-500 shadow-sm"
               />
               <svg
                 className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400 h-4 w-4 pointer-events-none"
