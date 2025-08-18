@@ -11,10 +11,12 @@ import BarImage2 from "../assets/BarImage2.png";
 import BarImage3 from "../assets/BarImage3.png";
 import BarImage4 from "../assets/BarImage4.png";
 import BarImage5 from "../assets/BarImage5.png";
+import { useNavigate } from "react-router-dom";
 
 const barImages = [BarImage1, BarImage2, BarImage3, BarImage4, BarImage5];
 
 const Hero = () => {
+  const navigate = useNavigate();
   return (
     <div className="w-full flex flex-col">
       {/* Hero Section */}
@@ -44,10 +46,14 @@ const Hero = () => {
               Let Your Space Speak Style
             </p>
             <p className="font-[Poppins] text-[18px] font-normal uppercase text-gray-600 mb-3">
-              Explore People’s Most Trusted Sanitary Ware Brands In One Destination.
+              Explore People’s Most Trusted Sanitary Ware Brands In One
+              Destination.
             </p>
             <Button
               size="lg"
+              onClick={() => {
+                navigate("/shop");
+              }}
               className="bg-blue-600 hover:shadow-md text-white font-semibold py-6 px-8 text-sm rounded-md mt-4 shadow-blue-600 cursor-pointer"
             >
               Browse All Brands

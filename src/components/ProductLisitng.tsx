@@ -10,7 +10,6 @@ const categories = [
   "Premium Bath Fittings",
 ];
 
-// Example: Only "Luxury Toilets" has products here. Add others if needed.
 const products = [
   {
     name: "Norma Table Top Wash Basin",

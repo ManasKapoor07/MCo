@@ -12,7 +12,7 @@ const Dropdown: React.FC<DropdownProps> = ({ title, children }) => {
         className="flex items-center justify-between mb-2 cursor-pointer"
         onClick={() => setOpen(!open)}
       >
-        <h4 className="font-[Poppins] font-bold text-xl">{title}</h4>
+        <h4 className="font-[Poppins] font-bold text-lg">{title}</h4>
 
         {/* One chevron that rotates smoothly */}
         <ChevronDown
