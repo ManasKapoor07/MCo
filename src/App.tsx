@@ -63,7 +63,7 @@ function App() {
     return (
       <div className="fixed inset-0 flex flex-col items-center justify-center bg-white z-50">
         <img src={logoMc} alt="Logo" className="h-10 w-auto mb-6 animate-bounce" />
-        <span className="text-xl font-semibold text-gray-700">Loading...</span>
+        {/* <span className="text-xl font-semibold text-gray-700">Loading...</span> */}
       </div>
     );
   }
