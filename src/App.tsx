@@ -4,6 +4,7 @@ import Home from "./pages/Home";
 import About from "./pages/About";
 import Contact from "./pages/Contact";
 import Shop from "./pages/Shop";
+import ProductDetail from "./pages/ProductDetail";
 // import "./App.css";
 
 const router = createBrowserRouter([
@@ -36,6 +37,14 @@ const router = createBrowserRouter([
     element: (
       <Layout>
         <Shop />
+      </Layout>
+    ),
+  },
+  {
+    path: "/product",
+    element: (
+      <Layout>
+        <ProductDetail />
       </Layout>
     ),
   }
