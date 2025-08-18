@@ -9,3 +9,9 @@ export type Product = {
   category: string;
   color: string;
 };
+
+
+export type DropdownProps = {
+  title: string;
+  children: React.ReactNode;
+};
