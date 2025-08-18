@@ -6,42 +6,40 @@ export default function Footer() {
     <footer className="bg-[#F2F8FF] pt-16 pb-8 px-4">
       <div className="w-full px-4 sm:px-6 lg:px-8">
         {/* Main footer content */}
-        <div className="flex items-center justify-between flex-wrap mb-8">
+        <div className="flex flex-col md:flex-row md:items-center md:justify-between mb-8 space-y-6 md:space-y-0">
           {/* Company Brand */}
-          <div className="md:col-span-1">
-            <h2 className="text-3xl font-semi-bold text-black font-[Volkhov]">
-              <img
-                src={logoMc}
-                alt="Maheshwari & Co. Logo"
-                className="h-7 w-auto object-contain"
-              />
-            </h2>
+          <div className="flex justify-center md:justify-start">
+            <img
+              src={logoMc}
+              alt="Maheshwari & Co. Logo"
+              className="h-7 w-auto object-contain"
+            />
           </div>
 
           {/* Navigation Links */}
-          <div className="flex-1 flex justify-center order-last md:order-none w-full md:w-auto mt-4 md:mt-0 ml-20">
-            <div className="flex space-x-12">
+          <div className="flex justify-center">
+            <div className="flex flex-wrap justify-center space-x-6 sm:space-x-8">
               <a
                 href="#"
-                className="font-medium text-[16px] leading-[30px] tracking-[0px] font-inter"
+                className="font-medium text-[15px] sm:text-[16px] leading-[30px] font-inter text-gray-800 hover:text-[#1447E6] transition"
               >
                 About
               </a>
               <a
                 href="#"
-                className="font-medium text-[16px] leading-[30px] tracking-[0px] font-inter"
+                className="font-medium text-[15px] sm:text-[16px] leading-[30px] font-inter text-gray-800 hover:text-[#1447E6] transition"
               >
                 Categories
               </a>
               <a
                 href="#"
-                className="font-medium text-[16px] leading-[30px] tracking-[0px] font-inter"
+                className="font-medium text-[15px] sm:text-[16px] leading-[30px] font-inter text-gray-800 hover:text-[#1447E6] transition"
               >
                 New Arrivals
               </a>
               <a
                 href="#"
-                className="font-medium text-[16px] leading-[30px] tracking-[0px] font-inter"
+                className="font-medium text-[15px] sm:text-[16px] leading-[30px] font-inter text-gray-800 hover:text-[#1447E6] transition"
               >
                 Contact
               </a>
@@ -49,7 +47,7 @@ export default function Footer() {
           </div>
 
           {/* Contact & Social */}
-          <div className="flex space-x-4">
+          <div className="flex justify-center md:justify-end space-x-4">
             <a
               href="#"
               className="w-10 h-10 bg-white rounded-lg flex items-center justify-center hover:bg-[#1447E6] hover:text-white transition-colors shadow-sm"
@@ -75,12 +73,12 @@ export default function Footer() {
         </div>
 
         {/* Divider line */}
-        <div className="border-t-1 border-slate-400 pt-8">
+        <div className="border-t border-slate-300 pt-8">
           <div className="flex flex-col md:flex-row justify-between items-center space-y-4 md:space-y-0">
-            <p className="text-slate-900 text-sm">
+            <p className="text-slate-900 text-sm text-center md:text-left">
               © 2024 M&CO. All rights reserved.
             </p>
-            <div className="flex space-x-6">
+            <div className="flex flex-wrap justify-center space-x-6">
               <a
                 href="#"
                 className="text-slate-900 hover:text-[#1447E6] text-sm transition-colors"

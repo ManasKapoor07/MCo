@@ -9,7 +9,6 @@ interface Testimonial {
 }
 
 const testimonials: Testimonial[] = [
-  /* same 9 items from before */
   { id: 1, name: "Alice Martin", role: "Interior Designer", avatar: "https://i.pravatar.cc/150?img=11", content: "M&CO transformed my living space—every detail is perfection. I’ve never felt more at home." },
   { id: 2, name: "Brian Lee", role: "Architect", avatar: "https://i.pravatar.cc/150?img=12", content: "The quality and service are unmatched. My clients are thrilled with the final results!" },
   { id: 3, name: "Carmen Diaz", role: "Homeowner", avatar: "https://i.pravatar.cc/150?img=13", content: "I was blown away by how seamlessly everything came together. Truly a five-star experience." },
@@ -22,10 +21,11 @@ const testimonials: Testimonial[] = [
 ];
 
 export default function CustomerTestimonials() {
-  const pageCount = Math.ceil(testimonials.length / 3);
+  const itemsPerPage = 3;
+  const pageCount = Math.ceil(testimonials.length / itemsPerPage);
   const [page, setPage] = useState(0);
 
-  // Autoplay every 5 seconds
+  // autoplay every 5s
   useEffect(() => {
     const timer = setInterval(() => {
       setPage((p) => (p + 1) % pageCount);
@@ -33,44 +33,49 @@ export default function CustomerTestimonials() {
     return () => clearInterval(timer);
   }, [pageCount]);
 
-  // chunk into pages of 3
   const pages = Array.from({ length: pageCount }, (_, i) =>
-    testimonials.slice(i * 3, i * 3 + 3)
+    testimonials.slice(i * itemsPerPage, i * itemsPerPage + itemsPerPage)
   );
 
   return (
-    <section className="py-16 bg-slate-50">
+    <section className="py-12 sm:py-16 bg-slate-50">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* Header */}
-        <div className="text-center mb-12">
-          <h2 className="text-3xl md:text-4xl font-bold text-slate-900 mb-4">
+        <div className="text-center mb-10 sm:mb-12">
+          <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold text-slate-900 mb-4">
             Hear It from Our Happy Clients
           </h2>
-          <p className="text-lg text-slate-600 max-w-3xl mx-auto">
+          <p className="text-base sm:text-lg text-slate-600 max-w-3xl mx-auto">
             We believe every product should speak for itself — but when it
             doesn’t, our customers do. Explore the stories and praise from
             people who chose us for their most personal spaces.
           </p>
         </div>
 
-        {/* Carousel Wrapper */}
+        {/* Carousel */}
         <div className="relative overflow-hidden">
-          {/* Track */}
           <div
             className="flex transition-transform duration-700 ease-out"
-            style={{ width: `${100 * pageCount}%`, transform: `translateX(-${(100 / pageCount) * page}%)` }}
+            style={{
+              width: `${100 * pageCount}%`,
+              transform: `translateX(-${(100 / pageCount) * page}%)`,
+            }}
           >
             {pages.map((group, idx) => (
-              <div key={idx} className="grid grid-cols-1 md:grid-cols-3 gap-8 flex-shrink-0" style={{ width: `${100 / pageCount}%` }}>
+              <div
+                key={idx}
+                className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8 flex-shrink-0"
+                style={{ width: `${100 / pageCount}%` }}
+              >
                 {group.map((t) => (
                   <div
                     key={t.id}
-                    className="bg-white rounded-xl p-6 shadow-sm flex flex-col"
+                    className="bg-white rounded-xl p-5 sm:p-6 shadow-md hover:shadow-lg transition-shadow duration-300 flex flex-col"
                   >
-                    <p className="text-slate-600 mb-6 italic flex-1">
+                    <p className="text-slate-600 mb-6 italic flex-1 text-sm sm:text-base leading-relaxed">
                       “{t.content}”
                     </p>
-                    <div className="flex items-center mt-4">
+                    <div className="flex items-center mt-auto">
                       <img
                         src={t.avatar}
                         alt={t.name}
@@ -98,7 +103,8 @@ export default function CustomerTestimonials() {
             <button
               key={idx}
               onClick={() => setPage(idx)}
-              className={`w-4 h-4 rounded-full transition-colors duration-300 ${
+              aria-label={`Go to testimonials page ${idx + 1}`}
+              className={`w-3 h-3 sm:w-4 sm:h-4 rounded-full transition-colors duration-300 ${
                 idx === page
                   ? "bg-blue-700"
                   : "bg-slate-400 hover:bg-slate-600"

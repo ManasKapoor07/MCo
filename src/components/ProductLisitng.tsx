@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { Star } from "lucide-react";
-import product1 from "../assets/product1.svg"; // Adjust path per your file setup
+import product1 from "../assets/product1.svg"; // Adjust path per your setup
 
 const categories = [
   "Modern Wash Basins",
@@ -74,26 +74,25 @@ export default function ProductListing() {
   );
 
   return (
-    <div className="bg-blue-50 min-h-screen py-10 px-2 md:px-0">
+    <div className="bg-blue-50 min-h-screen py-8 sm:py-12 px-3 sm:px-6 lg:px-0">
       {/* Headings */}
-      <div className="max-w-6xl mx-auto text-center mb-8">
-        <h1 className="text-3xl md:text-4xl font-bold mb-3 tracking-tight">
+      <div className="max-w-6xl mx-auto text-center mb-6 sm:mb-10 px-2">
+        <h1 className="text-2xl sm:text-3xl md:text-4xl font-bold mb-3 tracking-tight">
           Our Premium Collection
         </h1>
-        <p className="text-gray-600 text-base md:text-lg font-normal">
+        <p className="text-gray-600 text-sm sm:text-base md:text-lg font-normal leading-relaxed">
           Discover our range of innovative sanitaryware products designed to
-          elevate your bathroom
-          <br />
-          experience with cutting-edge technology and timeless elegance.
+          elevate your bathroom experience with cutting-edge technology and
+          timeless elegance.
         </p>
       </div>
 
       {/* Category Tabs */}
-      <div className="flex justify-center gap-10 flex-wrap mb-10">
+      <div className="flex justify-start sm:justify-center gap-3 sm:gap-6 overflow-x-auto sm:overflow-visible px-1 mb-8 sm:mb-12 pb-2">
         {categories.map((cat) => (
           <button
             key={cat}
-            className={`px-5 py-2 rounded-sm font-normal shadow-md cursor-pointer transition-colors mb-2 ${
+            className={`whitespace-nowrap px-4 sm:px-5 py-2 rounded-md font-medium text-sm sm:text-base shadow-md cursor-pointer transition-colors ${
               cat === activeCategory
                 ? "bg-[#1447E6] text-white shadow-md shadow-[#1447E6]"
                 : "bg-white hover:bg-[#1447E6] hover:text-white"
@@ -106,18 +105,20 @@ export default function ProductListing() {
       </div>
 
       {/* Product Cards Grid */}
-      <div className="max-w-6xl mx-auto grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-8">
+      <div className="max-w-6xl mx-auto grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6 sm:gap-8 px-2 sm:px-0">
         {filteredProducts.map((product, idx) => (
           <div
             key={idx}
-            className="bg-white w-full md:w-auto rounded-md shadow-lg px-4 p-5 flex flex-col items-start relative group transition hover:shadow-xl"
+            className="bg-white rounded-lg shadow-lg px-3 sm:px-4 py-5 flex flex-col items-start group transition hover:shadow-xl"
           >
             <img
               src={product.image}
               alt={product.name}
-              className="w-full h-44 object-contain mb-4 rounded-md "
+              className="w-full h-40 sm:h-44 object-contain mb-4 rounded-md"
             />
-            <div className="text-base font-semibold mb-1">{product.name}</div>
+            <div className="text-sm sm:text-base font-semibold mb-1 line-clamp-2">
+              {product.name}
+            </div>
             <div className="text-xs text-gray-500 font-normal mb-2">
               {product.category}
             </div>
@@ -127,7 +128,8 @@ export default function ProductListing() {
               {[1, 2, 3, 4, 5].map((starIdx) => (
                 <Star
                   key={starIdx}
-                  size={18}
+                  size={16}
+                  className="sm:w-[18px] sm:h-[18px]"
                   color={
                     starIdx <= Math.round(product.rating)
                       ? "#F7B500"
@@ -136,16 +138,16 @@ export default function ProductListing() {
                   fill={
                     starIdx <= Math.round(product.rating) ? "#F7B500" : "none"
                   }
-                  className="mr-0.5"
                 />
               ))}
-              <span className="ml-2 text-gray-700 font-medium">
+              <span className="ml-2 text-gray-700 text-xs sm:text-sm font-medium">
                 {product.rating}
               </span>
             </div>
             <div className="text-xs text-gray-500 mb-4">{product.reviews}</div>
+
             {/* Price */}
-            <div className="text-xl font-bold text-gray-800 mt-auto">
+            <div className="text-lg sm:text-xl font-bold text-gray-800 mt-auto">
               {product.currency}
               {product.price.toLocaleString("en-IN", {
                 maximumFractionDigits: 2,
@@ -157,8 +159,8 @@ export default function ProductListing() {
       </div>
 
       {/* View More Button */}
-      <div className="flex justify-center mt-12">
-        <button className="bg-[#1447E6] text-white py-3 rounded-md font-semibold hover:bg-blue-700 transition w-52">
+      <div className="flex justify-center mt-10 sm:mt-12 px-3">
+        <button className="bg-[#1447E6] text-white py-2.5 sm:py-3 rounded-md text-sm sm:text-base font-semibold hover:bg-blue-700 transition w-full sm:w-52">
           View More
         </button>
       </div>
