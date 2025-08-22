@@ -48,7 +48,7 @@ const Header = () => {
               <Link
                 key={label}
                 to={path ?? "#"}
-                className={`relative font-['Poppins'] text-[clamp(0.85rem,0.7rem+0.6vw,1rem)] transition
+                className={`relative font-['Poppins'] text-sm transition
                   ${
                     isActive
                       ? "text-blue-600 after:absolute after:left-0 after:-bottom-1 after:w-full after:h-[2px] after:bg-blue-600"

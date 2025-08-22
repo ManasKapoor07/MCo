@@ -61,7 +61,9 @@ export default function ProductCard({ product }: { product: Product }) {
       {/* Rating */}
       <div className="flex items-center gap-2 mb-3">
         <div>{getStars(product.rating)}</div>
-        <span className="text-xs text-gray-500 font-medium">{product.rating} / 5</span>
+        <span className="text-xs text-gray-500 font-medium">
+          {product.rating} / 5
+        </span>
       </div>
 
       {/* Brand & Category Pills */}

@@ -5,6 +5,7 @@ import { getColorForName } from "@/lib/utils";
 import RangeSlider from "./RangeSlider";
 import Dropdown from "./Dropdown";
 import { SlidersHorizontal } from "lucide-react"; // icon for mobile filter toggle
+import { useNavigate, useSearchParams } from "react-router-dom";
 
 const SAMPLE_COUNT = 30;
 
@@ -88,6 +89,12 @@ export default function ShopPage() {
     return copy;
   }
 
+  const [searchParams, setSeachParams] = useSearchParams();
+  const handleProducClick = (id) => {
+    searchParams.set("produc_id", id);
+    setSeachParams(searchParams);
+  };
+
   const filtersChanged =
     stagedMinPrice !== appliedMinPrice ||
     stagedMaxPrice !== appliedMaxPrice ||
@@ -160,30 +167,51 @@ export default function ShopPage() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
+  const navigate = useNavigate();
+
+  const handleProductById = (prodId) => {
+    navigate(`/product/${prodId}`);
+  };
+
   return (
-    <div className="min-h-screen bg-gradient-to-br from-white to-slate-50 py-4 px-3 sm:px-6">
-      <div className="max-w-7xl mx-auto">
+    <div className="min-h-screen py-4 px-3 sm:px-2">
+      <div className="mx-5">
         {/* Breadcrumb */}
-        <nav className="flex items-center text-xs mb-6 sm:mb-8">
+        <nav className="flex items-center text-xs mb-6 mt-2 sm:mb-4">
           <span className="font-semibold uppercase text-gray-900">Home</span>
           <span className="mx-2 text-gray-400">/</span>
           <span className="font-semibold uppercase text-blue-600">Shop</span>
         </nav>
 
+        {/* Mobile "Filters" button shown only when sidebar is closed */}
+        {!mobileFiltersOpen && (
+          <div className="md:hidden mb-4">
+            <button
+              onClick={() => setMobileFiltersOpen(true)}
+              className="flex items-center gap-1 px-3 py-2 bg-gray-100 rounded-md text-sm text-gray-700"
+              aria-label="Open Filters Sidebar"
+            >
+              <SlidersHorizontal size={16} />
+              Filters
+            </button>
+          </div>
+        )}
+
         <div className="grid grid-cols-1 md:grid-cols-12 gap-6 md:gap-10">
           {/* Sidebar (desktop & mobile toggle) */}
-          <aside
-            className={`fixed inset-y-0 left-0 z-40 w-72 bg-white shadow-lg transform transition-transform duration-300 ease-in-out md:relative md:col-span-3 md:translate-x-0 md:shadow-none md:w-auto ${
+          <div
+            className={`fixed inset-y-0 z-40 w-96 bg-white shadow-lg transform transition-transform duration-300 ease-in-out md:relative md:col-span-3 md:translate-x-0 md:shadow-none md:w-auto ${
               mobileFiltersOpen ? "translate-x-0" : "-translate-x-full"
             }`}
           >
-            <div className="h-full overflow-y-auto md:h-auto md:overflow-visible p-6 border-r md:border-none">
+            <div className="h-full overflow-y-auto shadow-sm shadow-blue-400 rounded-md md:h-auto md:overflow-visible p-6 border-r md:border-none">
               <div className="flex items-center justify-between mb-6">
                 <h3 className="font-bold text-lg text-gray-900">Filters</h3>
                 <button
-                  onClick={resetFilters}
+                  onClick={() => setMobileFiltersOpen(false)} // Close sidebar on cross click
                   className="p-1 hover:bg-gray-100 rounded-full transition text-gray-500"
-                  title="Clear all filters"
+                  title="Close filters sidebar"
+                  aria-label="Close Filters Sidebar"
                 >
                   ✕
                 </button>
@@ -321,25 +349,21 @@ export default function ShopPage() {
                 </button>
               </div>
             </div>
-          </aside>
+          </div>
 
           {/* Main Products */}
           <main className="md:col-span-9 col-span-1 flex flex-col">
-            {/* Mobile filter toggle */}
+            {/* Mobile filter toggle info (hidden since we have separate button) */}
+            {/* You can remove this block if you want to avoid duplicate toggles */}
+            {/* 
             <div className="flex justify-between items-center mb-4 md:hidden">
               <div className="text-gray-700 text-sm font-medium">
                 {filtered.length
                   ? `${filtered.length} Products`
                   : "No Products Found"}
               </div>
-              <button
-                onClick={() => setMobileFiltersOpen(!mobileFiltersOpen)}
-                className="flex items-center gap-1 px-3 py-2 bg-gray-100 rounded-md text-sm text-gray-700"
-              >
-                <SlidersHorizontal size={16} />
-                Filters
-              </button>
-            </div>
+            </div> 
+            */}
 
             {/* Header */}
             <div className="flex flex-wrap justify-between items-center mb-4 gap-2">
@@ -372,7 +396,9 @@ export default function ShopPage() {
             {/* Product Grid */}
             <section className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5 sm:gap-8">
               {showing.map((p) => (
-                <ProductCard key={p.id} product={p} />
+                <div onClick={() => handleProductById(p.id)}>
+                  <ProductCard key={p.id} product={p} />
+                </div>
               ))}
             </section>
 
