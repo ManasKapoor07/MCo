@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import sink from "../assets/sinka.jpg";
 import bathrrom from "../assets/PremiumShowcase.png";
-import shop from "../assets/image.png";
+import shop from "../assets/PremiumShowcase.png";
 
 import { ChevronDown } from "lucide-react";
 
@@ -166,6 +166,46 @@ const sampleProduct: Product = {
   ],
 };
 
+/* ---------- More Like This Sample Products ---------- */
+const moreLikeThis: Product[] = [
+  {
+    id: 2,
+    title: "Modern Wall-mounted Basin",
+    price: 6799,
+    category: "Wash Basin",
+    images: [shop],
+    colors: ["white", "light"],
+    description: "Stylish wall-mounted basin with elegant finish.",
+    specs: [],
+    installation: [],
+    reviews: [],
+  },
+  {
+    id: 3,
+    title: "Classic Ceramic Wash Basin",
+    price: 5899,
+    category: "Wash Basin",
+    images: [sink],
+    colors: ["beige", "black"],
+    description: "Classic design with premium ceramic material.",
+    specs: [],
+    installation: [],
+    reviews: [],
+  },
+  {
+    id: 4,
+    title: "Compact Basin with Tap Hole",
+    price: 5200,
+    category: "Wash Basin",
+    images: [bathrrom],
+    colors: ["white", "blue"],
+    description: "Space-saving basin with built-in tap hole.",
+    specs: [],
+    installation: [],
+    reviews: [],
+  },
+];
+
 /* ---------- Main Component ---------- */
 export default function ProductDetail() {
   const [open, setOpen] = useState<string | null>(null);
@@ -180,10 +220,10 @@ export default function ProductDetail() {
   const [wish, setWish] = useState(false);
 
   return (
-    <div className="min-h-screen bg-gray-50 px-8 md:px-10 py-4">
+    <div className="min-h-screen bg-gray-50 px-4 sm:px-6 md:px-10 py-6">
       <div className="mx-auto max-w-7xl">
         {/* Breadcrumb */}
-        <nav className="text-xs text-gray-500 mb-4">
+        <nav className="text-[10px] sm:text-xs text-gray-500 mb-4">
           <span className="font-[Poppins] font-semibold uppercase tracking-wide">
             Home
           </span>
@@ -193,171 +233,159 @@ export default function ProductDetail() {
           </span>
         </nav>
 
-        <div className="flex flex-col lg:flex-row gap-10 w-full justify-center items-start">
+        <div className="flex flex-col lg:flex-row gap-10 w-full">
           {/* Left: Gallery */}
-          <div className="flex w-[60%] flex-col">
-            <div className="rounded-xl w-full shadow-2xl">
-              <div className="relative overflow-hidden rounded-2xl">
+          <div className="flex w-full lg:w-[55%] flex-col">
+            <div className="rounded-xl w-full shadow-xl">
+              <div className="relative rounded-2xl overflow-hidden">
                 <img
                   src={p.images[mainIndex]}
                   alt={p.title}
-                  className="w-full h-[500px] lg:h-[500px] object-cover rounded-2xl transform transition duration-500 hover:scale-105"
+                  className="w-full h-[280px] sm:h-[400px] lg:h-[500px] object-cover rounded-2xl transition-transform duration-500 hover:scale-105"
                 />
               </div>
             </div>
-            <div className="mt-5 flex w-full justify-center gap-4 ">
+
+            {/* Thumbnails with scroll on mobile */}
+            <div className="mt-4 flex w-full overflow-x-auto gap-3 pb-2 hide-scrollbar">
               {p.images.map((img, i) => (
                 <button
                   key={i}
                   onClick={() => setMainIndex(i)}
-                  className={`rounded-xl overflow-hidden border transition transform ${
+                  className={`flex-shrink-0 rounded-xl overflow-hidden border transition ${
                     i === mainIndex
-                      ? "border-blue-500 ring-2 ring-blue-200 shadow-sm scale-105"
+                      ? "border-blue-500 ring-2 ring-blue-200 shadow scale-105"
                       : "border-gray-200 hover:scale-105 hover:shadow"
                   }`}
                 >
-                  <div className="flex w-full border-none shadow-none">
-                    <img
-                      src={img}
-                      alt={`${p.title} ${i + 1}`}
-                      className="w-40"
-                    />
-                  </div>
+                  <img
+                    src={img}
+                    alt={`${p.title} ${i + 1}`}
+                    className="w-24 sm:w-32 md:w-40 h-20 object-cover"
+                  />
                 </button>
               ))}
             </div>
           </div>
 
           {/* Right: Info */}
-          <div className="flex flex-col w-[40%] space-y-8">
+          <div className="flex flex-col w-full lg:w-[45%] space-y-8 mt-6 lg:mt-0">
+            {/* Title & Price */}
             <div>
-              <div className="inline-block px-4 py-1 rounded-full bg-gray-100 text-sm text-gray-600 mb-4">
+              <div className="inline-block px-3 py-1 rounded-full bg-gray-100 text-xs sm:text-sm text-gray-600 mb-3">
                 {p.category}
               </div>
-              <h1 className="font-[Poppins] font-extrabold text-3xl lg:text-4xl text-gray-900 tracking-tight leading-tight">
+              <h1 className="font-[Poppins] font-extrabold text-2xl sm:text-3xl lg:text-4xl tracking-tight text-gray-900">
                 {p.title}
               </h1>
-              <p className="text-2xl font-[Poppins] font-semibold text-blue-600 mt-2">
+              <p className="text-xl sm:text-2xl font-semibold text-blue-600 mt-2">
                 {inr(p.price)}
               </p>
-              <div className="flex items-center gap-2 text-base text-gray-600 mt-1">
-                <IconStar className="w-5 h-5 fill-yellow-400" />
+              <div className="flex items-center gap-2 text-sm sm:text-base text-gray-600 mt-1">
+                <IconStar className="w-4 h-4 sm:w-5 sm:h-5 fill-yellow-400" />
                 <span className="font-semibold text-gray-800">4.8</span>
                 <span className="text-gray-400">(76 reviews)</span>
               </div>
             </div>
 
-            {/* Show all content previously in accordions here */}
-
             {/* Accordion Sections */}
-            <div className="space-y-4">
+            <div className=" rounded-xl bg-white shadow-md divide-y divide-gray-200 overflow-hidden">
               {/* Description */}
-              <div className="rounded-md bg-white shadow-sm border border-gray-100 overflow-hidden">
-                <div
-                  onClick={() => toggle("description")}
-                  className="flex justify-between items-center px-6 py-4 cursor-pointer select-none hover:bg-gray-50 transition"
-                >
-                  <h2 className="text-lg font-semibold text-gray-900">
-                    Description & Fit
-                  </h2>
-                  <ChevronDown
-                    className={`w-5 h-5 text-gray-500 transition-transform duration-300 ${
-                      open === "description" ? "rotate-180" : ""
-                    }`}
-                  />
-                </div>
-                <div
-                  className={`transition-all duration-300 overflow-hidden ${
+              <button
+                type="button"
+                onClick={() => toggle("description")}
+                className="flex justify-between items-center w-full px-6 py-4 text-left text-gray-900 font-semibold text-lg sm:text-xl transition-colors duration-200 hover:bg-gray-50 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-400 rounded-t-xl"
+                aria-expanded={open === "description"}
+                aria-controls="description-panel"
+              >
+                <span>Description</span>
+                <ChevronDown
+                  className={`w-6 h-6 text-gray-500 transform transition-transform duration-300 ${
                     open === "description"
-                      ? "max-h-[500px] opacity-100 py-4"
-                      : "max-h-0 opacity-0"
-                  } px-6 text-gray-600 leading-relaxed`}
-                >
-                  {p.description}
-                </div>
+                      ? "rotate-180 text-blue-600"
+                      : "text-gray-500"
+                  }`}
+                />
+              </button>
+              <div
+                id="description-panel"
+                className={`px-6 overflow-hidden transition-all duration-300 ease-in-out ${
+                  open === "description" ? "max-h-screen py-4" : "max-h-0"
+                } text-gray-700 text-sm sm:text-base`}
+              >
+                {p.description}
               </div>
 
-              {/* Specifications */}
-              <div className="rounded-md bg-white shadow-sm border border-gray-100 overflow-hidden">
-                <div
-                  onClick={() => toggle("specs")}
-                  className="flex justify-between items-center px-6 py-4 cursor-pointer select-none hover:bg-gray-50 transition"
-                >
-                  <h2 className="text-lg font-semibold text-gray-900">
-                    Specifications & Dimensions
-                  </h2>
-                  <ChevronDown
-                    className={`w-5 h-5 text-gray-500 transition-transform duration-300 ${
-                      open === "specs" ? "rotate-180" : ""
-                    }`}
-                  />
-                </div>
-                <div
-                  className={`transition-all duration-300 overflow-hidden ${
+              {/* Specs */}
+              <button
+                type="button"
+                onClick={() => toggle("specs")}
+                className="flex justify-between items-center w-full px-6 py-4 text-left text-gray-900 font-semibold text-lg sm:text-xl transition-colors duration-200 hover:bg-gray-50 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-400"
+                aria-expanded={open === "specs"}
+                aria-controls="specs-panel"
+              >
+                <span>Specifications</span>
+                <ChevronDown
+                  className={`w-6 h-6 text-gray-500 transform transition-transform duration-300 ${
                     open === "specs"
-                      ? "max-h-[1000px] opacity-100 py-6"
-                      : "max-h-0 opacity-0"
-                  } px-6`}
-                >
-                  <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-                    {p.specs.map((s) => (
-                      <div
-                        key={s.label}
-                        className="p-4 rounded-lg border border-gray-100 bg-gray-50 hover:bg-gray-100 transition flex flex-col"
-                      >
-                        <div className="text-xs text-gray-500 uppercase tracking-wide">
-                          {s.label}
-                        </div>
-                        <div className="font-medium text-lg text-gray-900 mt-1">
-                          {s.value}
-                        </div>
-                      </div>
-                    ))}
-                  </div>
-                </div>
+                      ? "rotate-180 text-blue-600"
+                      : "text-gray-500"
+                  }`}
+                />
+              </button>
+              <div
+                id="specs-panel"
+                className={`px-6 overflow-hidden transition-all duration-300 ease-in-out ${
+                  open === "specs" ? "max-h-screen py-4" : "max-h-0"
+                } text-gray-700 text-sm sm:text-base`}
+              >
+                <ul className="list-disc pl-5 space-y-2">
+                  {p.specs.map((s) => (
+                    <li key={s.label}>
+                      <strong className="font-semibold">{s.label}:</strong>{" "}
+                      {s.value}
+                    </li>
+                  ))}
+                </ul>
               </div>
 
               {/* Installation */}
-              <div className="rounded-md bg-white shadow-sm border border-gray-100 overflow-hidden">
-                <div
-                  onClick={() => toggle("installation")}
-                  className="flex justify-between items-center px-6 py-4 cursor-pointer select-none hover:bg-gray-50 transition"
-                >
-                  <h2 className="text-lg font-semibold text-gray-900">
-                    Installation & Care
-                  </h2>
-                  <ChevronDown
-                    className={`w-5 h-5 text-gray-500 transition-transform duration-300 ${
-                      open === "installation" ? "rotate-180" : ""
-                    }`}
-                  />
-                </div>
-                <div
-                  className={`transition-all duration-300 overflow-hidden ${
+              <button
+                type="button"
+                onClick={() => toggle("installation")}
+                className="flex justify-between items-center w-full px-6 py-4 text-left text-gray-900 font-semibold text-lg sm:text-xl transition-colors duration-200 hover:bg-gray-50 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-400 rounded-b-xl"
+                aria-expanded={open === "installation"}
+                aria-controls="installation-panel"
+              >
+                <span>Installation</span>
+                <ChevronDown
+                  className={`w-6 h-6 text-gray-500 transform transition-transform duration-300 ${
                     open === "installation"
-                      ? "max-h-[500px] opacity-100 py-4"
-                      : "max-h-0 opacity-0"
-                  } px-6`}
-                >
-                  <ul className="space-y-3">
-                    {p.installation.map((it, i) => (
-                      <li
-                        key={i}
-                        className="flex items-start gap-3 text-gray-700 leading-relaxed"
-                      >
-                        <span className="mt-2 w-2.5 h-2.5 bg-blue-500 rounded-full"></span>
-                        <span>{it}</span>
-                      </li>
-                    ))}
-                  </ul>
-                </div>
+                      ? "rotate-180 text-blue-600"
+                      : "text-gray-500"
+                  }`}
+                />
+              </button>
+              <div
+                id="installation-panel"
+                className={`px-6 overflow-hidden transition-all duration-300 ease-in-out ${
+                  open === "installation" ? "max-h-screen py-4" : "max-h-0"
+                } text-gray-700 text-sm sm:text-base`}
+              >
+                <ul className="list-disc pl-5 space-y-2">
+                  {p.installation.map((i, idx) => (
+                    <li key={idx}>{i}</li>
+                  ))}
+                </ul>
               </div>
             </div>
 
             {/* Colors */}
             <section>
-              <h2 className="text-base font-semibold mb-2">Available Colors</h2>
-              <div className="flex items-center gap-4 flex-wrap">
+              <h2 className="text-sm sm:text-base font-semibold mb-2">
+                Available Colors
+              </h2>
+              <div className="flex items-center gap-3 sm:gap-4 flex-wrap">
                 {p.colors.map((c) => {
                   const selected = selectedColor === c;
                   const bg = COLOR_MAP[c] ?? c;
@@ -365,18 +393,17 @@ export default function ProductDetail() {
                     <button
                       key={c}
                       onClick={() => setSelectedColor(c)}
-                      className={`w-8 h-8 rounded-full flex items-center justify-center border-2 transition ${
+                      className={`w-8 h-8 sm:w-9 sm:h-9 rounded-full flex items-center justify-center border-2 transition ${
                         selected
                           ? "ring-2 ring-blue-500 border-transparent scale-110"
                           : "border-gray-300 hover:scale-105"
                       }`}
                       style={{ background: bg }}
-                      aria-pressed={selected}
-                      title={c}
+                      aria-label={`Select color ${c}`}
                     >
                       {selected && (
                         <svg
-                          className="w-5 h-5 text-white"
+                          className="w-4 h-4 sm:w-5 sm:h-5 text-white"
                           viewBox="0 0 24 24"
                           fill="none"
                         >
@@ -395,30 +422,112 @@ export default function ProductDetail() {
               </div>
             </section>
 
-            {/* Add to Cart */}
-            <div className="mt-4">
-              <button className="w-full bg-gradient-to-r from-blue-600 to-indigo-500 text-white py-4 rounded-full font-[Poppins] font-semibold text-lg shadow-lg hover:shadow-xl hover:scale-[1.02] active:scale-[0.97] transition">
+            {/* Add to Cart & Wishlist Buttons */}
+            <div className="flex gap-4">
+              <button className="flex-grow bg-gradient-to-r from-blue-600 to-indigo-500 text-white px-6 py-3 sm:py-4 rounded-full font-[Poppins] font-semibold text-lg shadow-lg hover:shadow-xl hover:scale-[1.02] active:scale-[0.97] transition">
                 Add to Cart
+              </button>
+              <button
+                onClick={() => setWish(!wish)}
+                aria-label={wish ? "Remove from wishlist" : "Add to wishlist"}
+                className={`flex items-center justify-center w-12 h-12 rounded-full border hover:bg-gray-200 transition ${
+                  wish ? "text-red-600" : "text-gray-600"
+                }`}
+              >
+                <IconHeart className="w-6 h-6" />
               </button>
             </div>
           </div>
         </div>
 
+        {/* More Like This Section */}
+        <section className="mt-14 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <h2 className="font-[Poppins] font-bold text-3xl mb-8 text-gray-900">
+            More Like This
+          </h2>
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
+            {moreLikeThis.map((product) => (
+              <div
+                key={product.id}
+                className="bg-white rounded-xl shadow-lg overflow-hidden cursor-pointer hover:shadow-2xl transition-shadow duration-300"
+                title={product.title}
+              >
+                <img
+                  src={product.images[0]}
+                  alt={product.title}
+                  className="w-full h-56 object-cover transition-transform duration-400 hover:scale-105"
+                />
+                <div className="p-6 space-y-3">
+                  <h3
+                    className="font-semibold text-xl text-gray-900 truncate"
+                    title={product.title}
+                  >
+                    {product.title}
+                  </h3>
+                  <p className="text-blue-600 font-bold text-lg">
+                    {inr(product.price)}
+                  </p>
+                  {product.category && (
+                    <p className="text-sm text-gray-500 font-medium uppercase tracking-wide">
+                      {product.category}
+                    </p>
+                  )}
+                  <div className="flex items-center gap-3 flex-wrap">
+                    {product.colors.map((c) => (
+                      <span
+                        key={c}
+                        className="w-6 h-6 rounded-full border border-gray-300 shadow-sm"
+                        style={{ backgroundColor: COLOR_MAP[c] ?? c }}
+                        title={c}
+                      />
+                    ))}
+                  </div>
+                  {product.description && (
+                    <p className="text-gray-600 text-sm line-clamp-3">
+                      {product.description}
+                    </p>
+                  )}
+                  <button
+                    className="mt-3 w-full text-center bg-gradient-to-r from-blue-600 to-indigo-500 text-white py-2 rounded-full font-semibold text-sm hover:from-blue-700 hover:to-indigo-600 transition-colors"
+                    aria-label={`View details of ${product.title}`}
+                  >
+                    View Details
+                  </button>
+                </div>
+              </div>
+            ))}
+          </div>
+        </section>
+
         {/* Reviews */}
-        <section className="mt-16 max-w-3xl mx-auto">
-          <div className="flex items-center justify-between mb-6">
-            <h2 className="font-[Poppins] font-bold text-2xl">Reviews</h2>
-            <div className="flex items-center text-sm text-gray-500">
-              <span>Sort by:</span>
-              <select className="ml-2 px-3 py-2 border rounded text-sm border-gray-200 bg-gray-50">
+        <section className="mt-12 sm:mt-16  mx-auto px-4 sm:px-0">
+          <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between mb-8 gap-4">
+            <h2 className="font-[Poppins] font-bold text-2xl sm:text-3xl text-gray-900">
+              Reviews
+            </h2>
+            <div className="flex items-center text-sm text-gray-600">
+              <label htmlFor="sortReviews" className="mr-2 font-medium">
+                Sort by:
+              </label>
+              <select
+                id="sortReviews"
+                className="ml-2 px-3 py-2 border border-gray-300 rounded-md bg-white text-gray-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition"
+              >
                 <option>Suggested</option>
+                <option>Newest</option>
+                <option>Highest Rating</option>
+                <option>Lowest Rating</option>
               </select>
             </div>
           </div>
-          <div className="bg-white rounded-lg border border-gray-200 p-6 shadow-sm">
-            {p.reviews.map((r) => (
-              <ReviewItem key={r.id} r={r} />
-            ))}
+          <div className="bg-white rounded-xl border border-gray-300 p-6 shadow-lg divide-y divide-gray-200">
+            {p.reviews.length ? (
+              p.reviews.map((r) => <ReviewItem key={r.id} r={r} />)
+            ) : (
+              <p className="text-center text-gray-500 italic py-6">
+                No reviews yet.
+              </p>
+            )}
           </div>
         </section>
       </div>

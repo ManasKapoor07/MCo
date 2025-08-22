@@ -174,7 +174,7 @@ export default function ShopPage() {
   };
 
   return (
-    <div className="min-h-screen py-4 px-3 sm:px-2">
+    <div className="min-h-screen py-4 px-3 sm:px-6 max-w-[1200px] mx-auto">
       <div className="mx-5">
         {/* Breadcrumb */}
         <nav className="flex items-center text-xs mb-6 mt-2 sm:mb-4">
@@ -183,7 +183,7 @@ export default function ShopPage() {
           <span className="font-semibold uppercase text-blue-600">Shop</span>
         </nav>
 
-        {/* Mobile "Filters" button shown only when sidebar is closed */}
+        {/* Mobile Filters Button */}
         {!mobileFiltersOpen && (
           <div className="md:hidden mb-4">
             <button
@@ -197,174 +197,172 @@ export default function ShopPage() {
           </div>
         )}
 
-        <div className="grid grid-cols-1 md:grid-cols-12 gap-6 md:gap-10">
-          {/* Sidebar (desktop & mobile toggle) */}
+        {/* Overlay for mobile sidebar */}
+        {mobileFiltersOpen && (
           <div
-            className={`fixed inset-y-0 z-40 w-96 bg-white shadow-lg transform transition-transform duration-300 ease-in-out md:relative md:col-span-3 md:translate-x-0 md:shadow-none md:w-auto ${
-              mobileFiltersOpen ? "translate-x-0" : "-translate-x-full"
-            }`}
+            onClick={() => setMobileFiltersOpen(false)}
+            className="fixed inset-0 bg-opacity-30 z-30 md:hidden"
+            aria-hidden="true"
+          />
+        )}
+
+        <div className="grid grid-cols-1 md:grid-cols-12 gap-6 md:gap-10">
+          {/* Sidebar */}
+          <aside
+            className={`
+              fixed inset-y-0 left-0 z-40 w-64 bg-white shadow-lg p-6 border-r md:relative md:col-span-3 md:w-auto md:shadow-none md:border-none
+              transform transition-transform duration-300 ease-in-out
+              ${mobileFiltersOpen ? "translate-x-0" : "-translate-x-full"}
+              md:translate-x-0
+              md:block
+            `}
           >
-            <div className="h-full overflow-y-auto shadow-sm shadow-blue-400 rounded-md md:h-auto md:overflow-visible p-6 border-r md:border-none">
-              <div className="flex items-center justify-between mb-6">
-                <h3 className="font-bold text-lg text-gray-900">Filters</h3>
-                <button
-                  onClick={() => setMobileFiltersOpen(false)} // Close sidebar on cross click
-                  className="p-1 hover:bg-gray-100 rounded-full transition text-gray-500"
-                  title="Close filters sidebar"
-                  aria-label="Close Filters Sidebar"
-                >
-                  ✕
-                </button>
+            <div className="flex items-center justify-between mb-6">
+              <h3 className="font-bold text-lg text-gray-900">Filters</h3>
+              <button
+                onClick={() => setMobileFiltersOpen(false)}
+                className="p-1 hover:bg-gray-100 rounded-full text-gray-500"
+                title="Close filters sidebar"
+                aria-label="Close Filters Sidebar"
+              >
+                ✕
+              </button>
+            </div>
+
+            <hr className="border-gray-100 mb-6" />
+
+            {/* Filters */}
+            <Dropdown title="Price">
+              <div className="mb-2 text-sm text-gray-700">
+                <span className="font-medium">
+                  ₹{stagedMinPrice.toLocaleString()} - ₹
+                  {stagedMaxPrice.toLocaleString()}
+                </span>
               </div>
-              <hr className="border-gray-100 mb-6" />
+              <RangeSlider
+                min={1000}
+                max={20000}
+                step={100}
+                values={[stagedMinPrice, stagedMaxPrice]}
+                minGap={500}
+                onChange={([low, high]) => {
+                  setStagedMinPrice(low);
+                  setStagedMaxPrice(high);
+                }}
+              />
+            </Dropdown>
 
-              {/* Filters */}
-              <Dropdown title="Price">
-                <div className="mb-2 text-sm text-gray-700">
-                  <span className="font-medium">
-                    ₹{stagedMinPrice.toLocaleString()} - ₹
-                    {stagedMaxPrice.toLocaleString()}
-                  </span>
-                </div>
-                <RangeSlider
-                  min={1000}
-                  max={20000}
-                  step={100}
-                  values={[stagedMinPrice, stagedMaxPrice]}
-                  minGap={500}
-                  onChange={([low, high]) => {
-                    setStagedMinPrice(low);
-                    setStagedMaxPrice(high);
-                  }}
-                />
-              </Dropdown>
+            <Dropdown title="Category">
+              <div className="flex flex-wrap gap-2">
+                {categories.map((c) => (
+                  <button
+                    key={c}
+                    onClick={() =>
+                      setStagedSelectedCategories(
+                        toggleSet(stagedSelectedCategories, c)
+                      )
+                    }
+                    className={`px-3 py-1.5 rounded-full text-xs sm:text-sm font-medium transition-all duration-150
+                      ${
+                        stagedSelectedCategories.has(c)
+                          ? "bg-blue-600 text-white shadow"
+                          : "bg-gray-100 text-gray-600 hover:bg-blue-50 hover:text-blue-600"
+                      }`}
+                  >
+                    {c}
+                  </button>
+                ))}
+              </div>
+            </Dropdown>
 
-              <Dropdown title="Category">
-                <div className="flex flex-wrap gap-2">
-                  {categories.map((c) => (
+            <Dropdown title="Brands">
+              <div className="flex flex-wrap gap-2">
+                {brands.map((b) => (
+                  <button
+                    key={b}
+                    onClick={() =>
+                      setStagedSelectedBrands(toggleSet(stagedSelectedBrands, b))
+                    }
+                    className={`px-3 py-1.5 rounded-full text-xs sm:text-sm font-medium transition-all duration-150
+                      ${
+                        stagedSelectedBrands.has(b)
+                          ? "bg-blue-600 text-white shadow"
+                          : "bg-gray-100 text-gray-600 hover:bg-blue-50 hover:text-blue-600"
+                      }`}
+                  >
+                    {b}
+                  </button>
+                ))}
+              </div>
+            </Dropdown>
+
+            <Dropdown title="Colors">
+              <div className="flex items-center gap-3 mt-2 ml-2 flex-wrap">
+                {colors.map((c) => {
+                  const selected = stagedSelectedColor === c;
+                  const tickColor = c === "white" ? "#222" : "#fff";
+                  return (
                     <button
+                      aria-label={c}
                       key={c}
                       onClick={() =>
-                        setStagedSelectedCategories(
-                          toggleSet(stagedSelectedCategories, c)
-                        )
+                        setStagedSelectedColor(selected ? null : c)
                       }
-                      className={`px-3 py-1.5 rounded-full text-xs sm:text-sm font-medium transition-all duration-150
+                      className={`relative w-7 h-7 sm:w-8 sm:h-8 rounded-full flex items-center justify-center border
                         ${
-                          stagedSelectedCategories.has(c)
-                            ? "bg-blue-600 text-white shadow"
-                            : "bg-gray-100 text-gray-600 hover:bg-blue-50 hover:text-blue-600"
+                          selected
+                            ? "ring-2 ring-blue-500 border-white scale-105"
+                            : "border-gray-300"
                         }`}
+                      style={{ background: getColorForName(c) }}
+                      title={c}
                     >
-                      {c}
+                      {selected && (
+                        <svg
+                          className="absolute w-3.5 h-3.5"
+                          viewBox="0 0 24 24"
+                          fill="none"
+                        >
+                          <path
+                            d="M20 6L9 17L4 12"
+                            stroke={tickColor}
+                            strokeWidth="2"
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                          />
+                        </svg>
+                      )}
                     </button>
-                  ))}
-                </div>
-              </Dropdown>
-
-              <Dropdown title="Brands">
-                <div className="flex flex-wrap gap-2">
-                  {brands.map((b) => (
-                    <button
-                      key={b}
-                      onClick={() =>
-                        setStagedSelectedBrands(
-                          toggleSet(stagedSelectedBrands, b)
-                        )
-                      }
-                      className={`px-3 py-1.5 rounded-full text-xs sm:text-sm font-medium transition-all duration-150
-                        ${
-                          stagedSelectedBrands.has(b)
-                            ? "bg-blue-600 text-white shadow"
-                            : "bg-gray-100 text-gray-600 hover:bg-blue-50 hover:text-blue-600"
-                        }`}
-                    >
-                      {b}
-                    </button>
-                  ))}
-                </div>
-              </Dropdown>
-
-              <Dropdown title="Colors">
-                <div className="flex items-center gap-3 mt-2 ml-2 flex-wrap">
-                  {colors.map((c) => {
-                    const selected = stagedSelectedColor === c;
-                    const tickColor = c === "white" ? "#222" : "#fff";
-                    return (
-                      <button
-                        aria-label={c}
-                        key={c}
-                        onClick={() =>
-                          setStagedSelectedColor(selected ? null : c)
-                        }
-                        className={`relative w-7 h-7 sm:w-8 sm:h-8 rounded-full flex items-center justify-center border
-                          ${
-                            selected
-                              ? "ring-2 ring-blue-500 border-white scale-105"
-                              : "border-gray-300"
-                          }`}
-                        style={{ background: getColorForName(c) }}
-                        title={c}
-                      >
-                        {selected && (
-                          <svg
-                            className="absolute w-3.5 h-3.5"
-                            viewBox="0 0 24 24"
-                            fill="none"
-                          >
-                            <path
-                              d="M20 6L9 17L4 12"
-                              stroke={tickColor}
-                              strokeWidth="2"
-                              strokeLinecap="round"
-                              strokeLinejoin="round"
-                            />
-                          </svg>
-                        )}
-                      </button>
-                    );
-                  })}
-                </div>
-              </Dropdown>
-
-              {/* Apply / Clear */}
-              <div className="mt-7 flex flex-col sm:flex-row justify-between items-center gap-3">
-                <button
-                  onClick={applyFilters}
-                  disabled={!filtersChanged}
-                  className={`rounded-md font-semibold py-2 px-4 shadow-md transition w-full sm:w-1/2
-                    ${
-                      filtersChanged
-                        ? "bg-blue-600 text-white hover:bg-blue-500"
-                        : "bg-gray-300 text-gray-500 cursor-not-allowed"
-                    }`}
-                >
-                  Apply
-                </button>
-                <button
-                  onClick={resetFilters}
-                  className="py-2 px-4 rounded-md border w-full sm:w-1/2 border-gray-200 text-sm text-gray-600 hover:bg-gray-100"
-                >
-                  Clear
-                </button>
+                  );
+                })}
               </div>
+            </Dropdown>
+
+            {/* Apply / Clear */}
+            <div className="mt-7 flex flex-col sm:flex-row justify-between items-center gap-3">
+              <button
+                onClick={applyFilters}
+                disabled={!filtersChanged}
+                className={`rounded-md font-semibold py-2 px-4 shadow-md transition w-full sm:w-1/2
+                  ${
+                    filtersChanged
+                      ? "bg-blue-600 text-white hover:bg-blue-500"
+                      : "bg-gray-300 text-gray-500 cursor-not-allowed"
+                  }`}
+              >
+                Apply
+              </button>
+              <button
+                onClick={resetFilters}
+                className="py-2 px-4 rounded-md border w-full sm:w-1/2 border-gray-200 text-sm text-gray-600 hover:bg-gray-100"
+              >
+                Clear
+              </button>
             </div>
-          </div>
+          </aside>
 
           {/* Main Products */}
           <main className="md:col-span-9 col-span-1 flex flex-col">
-            {/* Mobile filter toggle info (hidden since we have separate button) */}
-            {/* You can remove this block if you want to avoid duplicate toggles */}
-            {/* 
-            <div className="flex justify-between items-center mb-4 md:hidden">
-              <div className="text-gray-700 text-sm font-medium">
-                {filtered.length
-                  ? `${filtered.length} Products`
-                  : "No Products Found"}
-              </div>
-            </div> 
-            */}
-
             {/* Header */}
             <div className="flex flex-wrap justify-between items-center mb-4 gap-2">
               <div className="hidden md:block text-gray-700 font-medium text-sm">
@@ -396,8 +394,8 @@ export default function ShopPage() {
             {/* Product Grid */}
             <section className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5 sm:gap-8">
               {showing.map((p) => (
-                <div onClick={() => handleProductById(p.id)}>
-                  <ProductCard key={p.id} product={p} />
+                <div key={p.id} onClick={() => handleProductById(p.id)}>
+                  <ProductCard product={p} />
                 </div>
               ))}
             </section>
