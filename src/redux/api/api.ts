@@ -3,11 +3,11 @@ import { apiReducer } from ".";
 const allApi = apiReducer.injectEndpoints({
     //examples endpoint for POST and GET MEthods
   endpoints: (builder) => ({
-    mcoExamplePOST: builder.mutation({
+    products: builder.query({
       query: (params) => ({
-        url: "/emaple/mco",
-        method: "POST",
-        body: params,
+        url: "/products/",
+        method: "GET",
+        params: params,
         headers: {
           "Content-Type": "application/json",
           accept: "application/json",
@@ -27,4 +27,4 @@ const allApi = apiReducer.injectEndpoints({
     }),
   }),
 });
-export const { useMcoExamplePOSTMutation , useLazyMcoExampleGETQuery } = allApi;
+export const { useLazyProductsQuery , useLazyMcoExampleGETQuery } = allApi;
