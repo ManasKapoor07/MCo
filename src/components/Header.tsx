@@ -1,7 +1,8 @@
 import { useState } from "react";
 import { Link, useLocation, useSearchParams } from "react-router-dom";
 import { Input } from "@/components/ui/input";
-import { ShoppingCart, Heart, User, Menu, X } from "lucide-react";
+import { ShoppingCart, Heart, Menu, X } from "lucide-react"; // ❌ Removed User icon
+import { motion } from "framer-motion";
 import logoMc from "../assets/logoP2.svg";
 
 const Header = () => {
@@ -26,7 +27,7 @@ const Header = () => {
   ];
 
   return (
-    <header className="sticky top-0 z-50 w-full backdrop-blur-xl bg-white/70 ">
+    <header className="sticky top-0 z-50 w-full backdrop-blur-xl bg-white/70">
       <div className="mx-auto px-4 sm:px-6 flex items-center justify-between h-16">
         {/* Logo */}
         <Link to="/" className="flex items-center">
@@ -87,14 +88,17 @@ const Header = () => {
           </svg>
         </form>
 
-        {/* Icons + Mobile menu toggle */}
+        {/* Right section: Icons + Auth + Mobile menu toggle */}
         <div className="flex items-center space-x-4">
+          {/* Wishlist */}
           <Link
             to="/favorites"
             className="p-2 rounded-full hover:bg-blue-50 transition"
           >
             <Heart className="h-5 w-5 text-gray-700 hover:text-blue-600" />
           </Link>
+
+          {/* Cart */}
           <Link
             to="/cart"
             className="p-2 rounded-full hover:bg-blue-50 transition relative"
@@ -104,12 +108,27 @@ const Header = () => {
               2
             </span>
           </Link>
-          <Link
-            to="/profile"
-            className="p-2 rounded-full hover:bg-blue-50 transition"
-          >
-            <User className="h-5 w-5 text-gray-700 hover:text-blue-600" />
-          </Link>
+
+          {/* 🆕 Auth Buttons (Desktop only) */}
+          <div className="hidden lg:flex items-center space-x-3">
+            <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
+              <Link
+                to="/login"
+                className="px-4 py-2 text-sm font-medium text-blue-600 border border-blue-600 rounded-md hover:bg-blue-50 transition"
+              >
+                Sign In
+              </Link>
+            </motion.div>
+
+            <motion.div whileHover={{ scale: 1.08 }} whileTap={{ scale: 0.95 }}>
+              <Link
+                to="/register"
+                className="px-4 py-2 text-sm font-semibold text-white bg-blue-600 rounded-md shadow-md hover:bg-blue-700 transition"
+              >
+                Create Account
+              </Link>
+            </motion.div>
+          </div>
 
           {/* Hamburger (mobile only) */}
           <button
@@ -148,6 +167,29 @@ const Header = () => {
                 </Link>
               );
             })}
+
+            {/* 🆕 Mobile Auth Buttons */}
+            <div className="mt-4 flex flex-col gap-2">
+              <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
+                <Link
+                  to="/login"
+                  onClick={() => setMenuOpen(false)}
+                  className="block rounded-md border border-blue-600 px-4 py-2 text-center text-sm font-medium text-blue-600 hover:bg-blue-50 transition"
+                >
+                  Sign In
+                </Link>
+              </motion.div>
+
+              <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
+                <Link
+                  to="/register"
+                  onClick={() => setMenuOpen(false)}
+                  className="block rounded-md bg-blue-600 px-4 py-2 text-center text-sm font-semibold text-white shadow-md hover:bg-blue-700 transition"
+                >
+                  Create Account
+                </Link>
+              </motion.div>
+            </div>
           </nav>
 
           {/* Mobile Search */}

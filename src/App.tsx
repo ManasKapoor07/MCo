@@ -7,6 +7,7 @@ import Contact from "./pages/Contact";
 import Shop from "./pages/Shop";
 import ProductDetail from "./pages/ProductDetail";
 import logoMc from "./assets/logoP2.svg"; // Adjust path as needed
+import Signup from "./components/Authentication/Signup";
 
 const router = createBrowserRouter([
   {
@@ -14,6 +15,14 @@ const router = createBrowserRouter([
     element: (
       <Layout>
         <Home />
+      </Layout>
+    ),
+  },
+   {
+    path: "/register",
+    element: (
+      <Layout>
+        <Signup />
       </Layout>
     ),
   },
