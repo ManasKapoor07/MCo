@@ -6,6 +6,7 @@ import image from "../../assets/PremiumShowcase.png";
 import logo from "../../assets/logoP2.svg";
 import { useSignUpMutation } from "@/redux/api/api";
 import { Toaster, toast } from "sonner";
+import { useNavigate } from "react-router-dom";
 
 const SOCIAL_PROVIDERS = [
   {
@@ -47,6 +48,8 @@ const Signup = () => {
     password2: "",
     termsAccepted: false,
   });
+
+  const navigate = useNavigate();
   const [errors, setErrors] = useState({});
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
@@ -91,11 +94,11 @@ const Signup = () => {
       signup(formData).then((res) => {
         if (res.data) {
           toast.success("Account Created");
+          navigate('/login')
         } else {
           toast.error("Account creation failed");
         }
       });
-      // Handle success logic
     }
   };
 
