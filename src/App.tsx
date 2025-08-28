@@ -8,6 +8,8 @@ import Shop from "./pages/Shop";
 import ProductDetail from "./pages/ProductDetail";
 import logoMc from "./assets/logoP2.svg"; // Adjust path as needed
 import Signup from "./components/Authentication/Signup";
+import Login from "./components/Authentication/Login";
+import { Toaster } from "sonner";
 
 const router = createBrowserRouter([
   {
@@ -18,12 +20,20 @@ const router = createBrowserRouter([
       </Layout>
     ),
   },
-   {
+  {
     path: "/register",
     element: (
-      <Layout>
-        <Signup />
-      </Layout>
+      // <Layout>
+      <Signup />
+      // </Layout>
+    ),
+  },
+  {
+    path: "/login",
+    element: (
+      // <Layout>
+      <Login />
+      // </Layout>
     ),
   },
   {
@@ -57,28 +67,35 @@ const router = createBrowserRouter([
         <ProductDetail />
       </Layout>
     ),
-  }
+  },
 ]);
 
 function App() {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    const timer = setTimeout(() => setLoading(false), 2000);
+    const timer = setTimeout(() => setLoading(false), 1000);
     return () => clearTimeout(timer); // cleanup
   }, []);
 
   if (loading) {
     return (
       <div className="fixed inset-0 flex flex-col items-center justify-center bg-white z-50">
-        <img src={logoMc} alt="Logo" className="h-10 w-auto mb-6 animate-bounce" />
+        <img
+          src={logoMc}
+          alt="Logo"
+          className="h-10 w-auto mb-6 animate-bounce"
+        />
         {/* <span className="text-xl font-semibold text-gray-700">Loading...</span> */}
       </div>
     );
   }
 
   return (
-    <RouterProvider router={router} />
+    <>
+      <Toaster richColors/>
+      <RouterProvider router={router} />
+    </>
   );
 }
 

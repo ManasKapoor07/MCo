@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { Link, useLocation, useSearchParams } from "react-router-dom";
 import { Input } from "@/components/ui/input";
-import { ShoppingCart, Heart, Menu, X } from "lucide-react"; // ❌ Removed User icon
+import { ShoppingCart, Heart, Menu, X, User } from "lucide-react";
 import { motion } from "framer-motion";
 import logoMc from "../assets/logoP2.svg";
 
@@ -11,7 +11,7 @@ const Header = () => {
   const location = useLocation();
   const [searchParams] = useSearchParams();
 
-  const handleSearch = (e: React.FormEvent) => {
+  const handleSearch = (e) => {
     e.preventDefault();
     // handle searchInput (dispatch, navigate, etc.)
   };
@@ -21,14 +21,17 @@ const Header = () => {
   const navLinks = [
     { label: "Home", path: "/", key: "home" },
     { label: "About", path: "/about", key: "about" },
-    { label: "Categories", key: "categories" },
+    { label: "Categories", path: "/categories", key: "categories" },
     { label: "Shop", path: "/shop", key: "shop" },
     { label: "Contact", path: "/contact", key: "contact" },
   ];
 
+  // Detect if user is logged in by presence of access token
+  const isLoggedIn = Boolean(localStorage.getItem("access"));
+
   return (
-    <header className="sticky top-0 z-50 w-full backdrop-blur-xl bg-white/70">
-      <div className="mx-auto px-4 sm:px-6 flex items-center justify-between h-16">
+    <header className="sticky top-0 z-50 w-full backdrop-blur-xl bg-white/70 border-b border-gray-200">
+      <div className="mx-auto px-4 sm:px-6 flex items-center justify-between h-16 max-w-7xl">
         {/* Logo */}
         <Link to="/" className="flex items-center">
           <img
@@ -38,7 +41,7 @@ const Header = () => {
           />
         </Link>
 
-        {/* Desktop Nav */}
+        {/* Desktop Navigation */}
         <nav className="hidden lg:flex items-center space-x-8 font-medium">
           {navLinks.map(({ label, path, key }) => {
             const isActive =
@@ -49,13 +52,11 @@ const Header = () => {
               <Link
                 key={label}
                 to={path ?? "#"}
-                className={`relative font-['Poppins'] text-sm transition
-                  ${
-                    isActive
-                      ? "text-blue-600 after:absolute after:left-0 after:-bottom-1 after:w-full after:h-[2px] after:bg-blue-600"
-                      : "text-gray-700 hover:text-blue-500"
-                  }
-                `}
+                className={`relative font-['Poppins'] text-sm transition ${
+                  isActive
+                    ? "text-blue-600 after:absolute after:left-0 after:-bottom-1 after:w-full after:h-[2px] after:bg-blue-600"
+                    : "text-gray-700 hover:text-blue-500"
+                }`}
               >
                 {label}
               </Link>
@@ -94,6 +95,7 @@ const Header = () => {
           <Link
             to="/favorites"
             className="p-2 rounded-full hover:bg-blue-50 transition"
+            aria-label="Wishlist"
           >
             <Heart className="h-5 w-5 text-gray-700 hover:text-blue-600" />
           </Link>
@@ -102,6 +104,7 @@ const Header = () => {
           <Link
             to="/cart"
             className="p-2 rounded-full hover:bg-blue-50 transition relative"
+            aria-label="Cart"
           >
             <ShoppingCart className="h-5 w-5 text-gray-700 hover:text-blue-600" />
             <span className="absolute -top-1 -right-1 bg-blue-600 text-white text-[10px] font-semibold rounded-full px-1.5">
@@ -109,31 +112,38 @@ const Header = () => {
             </span>
           </Link>
 
-          {/* 🆕 Auth Buttons (Desktop only) */}
-          <div className="hidden lg:flex items-center space-x-3">
-            <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
-              <Link
-                to="/login"
-                className="px-4 py-2 text-sm font-medium text-blue-600 border border-blue-600 rounded-md hover:bg-blue-50 transition"
-              >
-                Sign In
-              </Link>
-            </motion.div>
+          {/* Auth Buttons (Desktop) */}
+          {isLoggedIn ? (
+            <Link to="/profile" aria-label="User Profile" className="p-2 rounded-full hover:bg-blue-50 transition">
+              <User className="h-6 w-6 text-gray-700 hover:text-blue-600" />
+            </Link>
+          ) : (
+            <div className="hidden lg:flex items-center space-x-3">
+              <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
+                <Link
+                  to="/login"
+                  className="px-4 py-2 text-sm font-medium text-blue-600 border border-blue-600 rounded-md hover:bg-blue-50 transition"
+                >
+                  Sign In
+                </Link>
+              </motion.div>
 
-            <motion.div whileHover={{ scale: 1.08 }} whileTap={{ scale: 0.95 }}>
-              <Link
-                to="/register"
-                className="px-4 py-2 text-sm font-semibold text-white bg-blue-600 rounded-md shadow-md hover:bg-blue-700 transition"
-              >
-                Create Account
-              </Link>
-            </motion.div>
-          </div>
+              <motion.div whileHover={{ scale: 1.08 }} whileTap={{ scale: 0.95 }}>
+                <Link
+                  to="/register"
+                  className="px-4 py-2 text-sm font-semibold text-white bg-blue-600 rounded-md shadow-md hover:bg-blue-700 transition"
+                >
+                  Create Account
+                </Link>
+              </motion.div>
+            </div>
+          )}
 
           {/* Hamburger (mobile only) */}
           <button
             onClick={() => setMenuOpen(!menuOpen)}
             className="lg:hidden p-2 rounded-md hover:bg-gray-100 transition"
+            aria-label={menuOpen ? "Close menu" : "Open menu"}
           >
             {menuOpen ? (
               <X className="h-6 w-6 text-gray-700" />
@@ -149,18 +159,14 @@ const Header = () => {
         <div className="lg:hidden bg-white border-t border-gray-200 shadow-md">
           <nav className="flex flex-col space-y-2 p-4">
             {navLinks.map(({ label, path, key }) => {
-              const isActive =
-                location.pathname === path ||
-                activeCategory?.toLowerCase() === key;
+              const isActive = location.pathname === path || activeCategory?.toLowerCase() === key;
               return (
                 <Link
                   key={label}
                   to={path ?? "#"}
                   onClick={() => setMenuOpen(false)}
                   className={`block py-2 text-sm font-medium transition ${
-                    isActive
-                      ? "text-blue-600"
-                      : "text-gray-700 hover:text-blue-500"
+                    isActive ? "text-blue-600" : "text-gray-700 hover:text-blue-500"
                   }`}
                 >
                   {label}
@@ -168,35 +174,40 @@ const Header = () => {
               );
             })}
 
-            {/* 🆕 Mobile Auth Buttons */}
+            {/* Mobile Auth Buttons */}
             <div className="mt-4 flex flex-col gap-2">
-              <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
+              {isLoggedIn ? (
                 <Link
-                  to="/login"
+                  to="/profile"
                   onClick={() => setMenuOpen(false)}
                   className="block rounded-md border border-blue-600 px-4 py-2 text-center text-sm font-medium text-blue-600 hover:bg-blue-50 transition"
                 >
-                  Sign In
+                  Profile
                 </Link>
-              </motion.div>
+              ) : (
+                <>
+                  <Link
+                    to="/login"
+                    onClick={() => setMenuOpen(false)}
+                    className="block rounded-md border border-blue-600 px-4 py-2 text-center text-sm font-medium text-blue-600 hover:bg-blue-50 transition"
+                  >
+                    Sign In
+                  </Link>
 
-              <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
-                <Link
-                  to="/register"
-                  onClick={() => setMenuOpen(false)}
-                  className="block rounded-md bg-blue-600 px-4 py-2 text-center text-sm font-semibold text-white shadow-md hover:bg-blue-700 transition"
-                >
-                  Create Account
-                </Link>
-              </motion.div>
+                  <Link
+                    to="/register"
+                    onClick={() => setMenuOpen(false)}
+                    className="block rounded-md bg-blue-600 px-4 py-2 text-center text-sm font-semibold text-white shadow-md hover:bg-blue-700 transition"
+                  >
+                    Create Account
+                  </Link>
+                </>
+              )}
             </div>
           </nav>
 
           {/* Mobile Search */}
-          <form
-            onSubmit={handleSearch}
-            className="flex items-center p-4 border-t border-gray-100"
-          >
+          <form onSubmit={handleSearch} className="flex items-center p-4 border-t border-gray-100">
             <Input
               type="text"
               placeholder="Search products..."

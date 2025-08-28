@@ -1,7 +1,7 @@
 import { apiReducer } from ".";
 
 const allApi = apiReducer.injectEndpoints({
-    //examples endpoint for POST and GET MEthods
+  //examples endpoint for POST and GET MEthods
   endpoints: (builder) => ({
     products: builder.query({
       query: (params) => ({
@@ -14,10 +14,22 @@ const allApi = apiReducer.injectEndpoints({
         },
       }),
     }),
-    mcoExampleGET: builder.query({
+    signUp: builder.mutation({
       query: (params) => ({
-        url: "/emaple/mco",
-        method: "GET",
+        url: "/signup/",
+        method: "POST",
+        body: params,
+        headers: {
+          "Content-Type": "application/json",
+          accept: "application/json",
+        },
+      }),
+    }),
+
+    login: builder.mutation({
+      query: (params) => ({
+        url: "/login/",
+        method: "POST",
         body: params,
         headers: {
           "Content-Type": "application/json",
@@ -27,4 +39,5 @@ const allApi = apiReducer.injectEndpoints({
     }),
   }),
 });
-export const { useLazyProductsQuery , useLazyMcoExampleGETQuery } = allApi;
+export const { useLazyProductsQuery, useSignUpMutation, useLoginMutation } =
+  allApi;

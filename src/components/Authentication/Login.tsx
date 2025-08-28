@@ -4,8 +4,9 @@ import { motion } from "framer-motion";
 import { FaApple, FaGoogle } from "react-icons/fa";
 import image from "../../assets/PremiumShowcase.png";
 import logo from "../../assets/logoP2.svg";
-import { useSignUpMutation } from "@/redux/api/api";
-import { Toaster, toast } from "sonner";
+import { useLoginMutation } from "@/redux/api/api";
+import { toast } from "sonner";
+import { useNavigate } from "react-router-dom";
 
 const SOCIAL_PROVIDERS = [
   {
@@ -37,40 +38,20 @@ const itemVariants = {
   visible: { opacity: 1, y: 0, transition: { duration: 0.28 } },
 };
 
-const Signup = () => {
+const Login = () => {
   const [formData, setFormData] = useState({
-    first_name: "",
-    last_name: "",
-    email: "",
     username: "",
     password: "",
-    password2: "",
-    termsAccepted: false,
+    rememberMe: false,
   });
+  const [login, { isLoading }] = useLoginMutation();
   const [errors, setErrors] = useState({});
   const [showPassword, setShowPassword] = useState(false);
-  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
-
-  const [signup, { data, isLoading }] = useSignUpMutation();
 
   const validate = () => {
     const newErrors = {};
-    if (!formData.first_name.trim())
-      newErrors.first_name = "First name is required";
-    if (!formData.last_name.trim())
-      newErrors.last_name = "Last name is required";
-    if (!formData.email.trim()) newErrors.email = "Email is required";
-    else if (
-      !/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i.test(formData.email.trim())
-    )
-      newErrors.email = "Invalid email address";
     if (!formData.username.trim()) newErrors.username = "Username is required";
-    if (!formData.password || formData.password.length < 8)
-      newErrors.password = "Password must be at least 8 characters";
-    if (formData.password !== formData.password2)
-      newErrors.password2 = "Passwords do not match";
-    if (!formData.termsAccepted)
-      newErrors.termsAccepted = "You must accept the terms and conditions";
+    if (!formData.password) newErrors.password = "Password is required";
 
     setErrors(newErrors);
     return Object.keys(newErrors).length === 0;
@@ -84,28 +65,34 @@ const Signup = () => {
     }));
     setErrors((prev) => ({ ...prev, [name]: "" }));
   };
+  const navigate = useNavigate();
 
   const handleSubmit = (e) => {
     e.preventDefault();
     if (validate()) {
-      signup(formData).then((res) => {
+      login(formData).then((res) => {
         if (res.data) {
-          toast.success("Account Created");
-        } else {
-          toast.error("Account creation failed");
+          console.log(res.data);
+          localStorage.setItem("access", res.data.access);
+          toast.success("Login successful!");
+
+          navigate("/", {
+            replace: true,
+          });
         }
       });
-      // Handle success logic
+      // Implement login logic here
     }
   };
 
   const handleSocialLogin = (provider) => {
-    alert(`Social signup with ${provider}.`);
-    // OAuth implementation here
+    alert(`Social login with ${provider}.`);
+    // Implement OAuth flow here
   };
 
   return (
     <div className="min-h-screen w-full flex flex-col md:flex-row bg-gradient-to-br from-blue-50 via-white to-blue-100">
+      {/* Left side: Login box */}
       <div className="w-full md:w-1/2 flex items-center justify-center">
         <motion.div
           className="mx-auto max-w-xs md:max-w-sm w-full rounded-2xl shadow-lg border border-blue-100 bg-white p-6"
@@ -113,6 +100,7 @@ const Signup = () => {
           initial="hidden"
           animate="visible"
         >
+          {/* Logo */}
           <motion.div
             className="flex justify-center mb-4"
             variants={itemVariants}
@@ -121,12 +109,14 @@ const Signup = () => {
               <img src={logo} alt="Logo" className="w-9 h-9 object-contain" />
             </span>
           </motion.div>
+          {/* Title */}
           <motion.h1
             className="text-xl font-semibold text-gray-800 mb-4 text-center"
             variants={itemVariants}
           >
-            Create your account
+            Login to your account
           </motion.h1>
+          {/* Social login buttons */}
           <motion.div
             className="flex justify-center gap-2 mb-4"
             variants={itemVariants}
@@ -137,87 +127,33 @@ const Signup = () => {
                 type="button"
                 onClick={() => handleSocialLogin(name)}
                 className={`w-9 h-9 ${bg} ${border} ${text} flex items-center justify-center rounded-md shadow-sm hover:shadow transition`}
-                aria-label={`Sign up with ${name}`}
+                aria-label={`Login with ${name}`}
               >
                 <Icon className="w-5 h-5" />
               </button>
             ))}
           </motion.div>
+          {/* OR Divider */}
           <motion.div className="relative mb-4" variants={itemVariants}>
             <span className="absolute inset-x-0 top-2 border-t border-blue-100"></span>
             <span className="relative bg-white px-2 text-xs text-blue-400 block w-fit mx-auto -mt-2">
               OR
             </span>
           </motion.div>
+          {/* Form */}
           <motion.form
             onSubmit={handleSubmit}
             noValidate
             className="space-y-3"
             variants={itemVariants}
           >
-            {/* Name fields */}
-            <motion.div className="flex gap-4" variants={itemVariants}>
-              <div className="flex-1">
-                <input
-                  id="first_name"
-                  name="first_name"
-                  type="text"
-                  value={formData.first_name}
-                  onChange={handleChange}
-                  placeholder="First name"
-                  className={`w-full rounded-lg border px-3 py-2 text-sm text-gray-900 placeholder-gray-400 bg-blue-50/40 focus:outline-none focus:ring-1 focus:ring-blue-300 focus:border-blue-300 transition ${
-                    errors.first_name ? "border-red-400" : "border-blue-100"
-                  }`}
-                />
-                {errors.first_name && (
-                  <p className="text-xs text-red-500 mt-1">
-                    {errors.first_name}
-                  </p>
-                )}
-              </div>
-              <div className="flex-1">
-                <input
-                  id="last_name"
-                  name="last_name"
-                  type="text"
-                  value={formData.last_name}
-                  onChange={handleChange}
-                  placeholder="Last name"
-                  className={`w-full rounded-lg border px-3 py-2 text-sm text-gray-900 placeholder-gray-400 bg-blue-50/40 focus:outline-none focus:ring-1 focus:ring-blue-300 focus:border-blue-300 transition ${
-                    errors.last_name ? "border-red-400" : "border-blue-100"
-                  }`}
-                />
-                {errors.last_name && (
-                  <p className="text-xs text-red-500 mt-1">
-                    {errors.last_name}
-                  </p>
-                )}
-              </div>
-            </motion.div>
-            {/* Email */}
-            <motion.div variants={itemVariants}>
-              <input
-                id="email"
-                name="email"
-                type="email"
-                autoComplete="email"
-                value={formData.email}
-                onChange={handleChange}
-                placeholder="Email"
-                className={`w-full rounded-lg border px-3 py-2 text-sm text-gray-900 placeholder-gray-400 bg-blue-50/40 focus:outline-none focus:ring-1 focus:ring-blue-300 focus:border-blue-300 transition ${
-                  errors.email ? "border-red-400" : "border-blue-100"
-                }`}
-              />
-              {errors.email && (
-                <p className="text-xs text-red-500 mt-1">{errors.email}</p>
-              )}
-            </motion.div>
             {/* Username */}
             <motion.div variants={itemVariants}>
               <input
                 id="username"
                 name="username"
                 type="text"
+                autoComplete="username"
                 value={formData.username}
                 onChange={handleChange}
                 placeholder="Username"
@@ -259,74 +195,29 @@ const Signup = () => {
                 <p className="text-xs text-red-500 mt-1">{errors.password}</p>
               )}
             </motion.div>
-            {/* Confirm Password */}
-            <motion.div className="relative" variants={itemVariants}>
-              <input
-                id="password2"
-                name="password2"
-                type={showConfirmPassword ? "text" : "password"}
-                value={formData.password2}
-                onChange={handleChange}
-                placeholder="Confirm Password"
-                className={`w-full rounded-lg border px-3 py-2 pr-10 text-sm text-gray-900 placeholder-gray-400 bg-blue-50/40 focus:outline-none focus:ring-1 focus:ring-blue-300 focus:border-blue-300 transition ${
-                  errors.password2 ? "border-red-400" : "border-blue-100"
-                }`}
-              />
-              <button
-                type="button"
-                onClick={() => setShowConfirmPassword(!showConfirmPassword)}
-                className="absolute right-2 top-2 text-gray-400 hover:text-blue-500"
-                tabIndex={-1}
-                aria-label={
-                  showConfirmPassword ? "Hide password" : "Show password"
-                }
-              >
-                {showConfirmPassword ? (
-                  <EyeOff className="w-4 h-4" />
-                ) : (
-                  <Eye className="w-4 h-4" />
-                )}
-              </button>
-              {errors.password2 && (
-                <p className="text-xs text-red-500 mt-1">{errors.password2}</p>
-              )}
-            </motion.div>
-            {/* Terms */}
+            {/* Remember Me & Forgot Password */}
             <motion.div
-              className="flex items-center gap-2 mt-1"
+              className="flex items-center justify-between text-xs text-gray-600"
               variants={itemVariants}
             >
-              <input
-                type="checkbox"
-                id="termsAccepted"
-                name="termsAccepted"
-                checked={formData.termsAccepted}
-                onChange={handleChange}
-                className="h-4 w-4 rounded border-blue-100 text-blue-500 focus:ring-blue-300"
-              />
-              <label htmlFor="termsAccepted" className="text-xs text-gray-600">
-                I agree to{" "}
-                <a href="/terms" className="text-blue-600 hover:underline">
-                  Terms & conditions
-                </a>
+              <label className="flex items-center gap-2">
+                <input
+                  type="checkbox"
+                  name="rememberMe"
+                  checked={formData.rememberMe}
+                  onChange={handleChange}
+                  className="h-4 w-4 rounded border-blue-100 text-blue-500 focus:ring-blue-300"
+                />
+                Keep me logged in
               </label>
-              {errors.termsAccepted && (
-                <p className="text-xs text-red-500 ml-2">
-                  {errors.termsAccepted}
-                </p>
-              )}
+              <a href="/forgot-password" className="hover:underline">
+                Forgot password?
+              </a>
             </motion.div>
             {/* Submit button */}
             <motion.button
               type="submit"
-              disabled={isLoading}
-              className={`w-full mt-3 bg-gradient-to-r from-blue-400 via-blue-500 to-blue-400 
-    ${
-      isLoading
-        ? "opacity-60 cursor-not-allowed"
-        : "hover:from-blue-500 hover:via-blue-600 hover:scale-[1.03]"
-    } 
-    text-white font-medium py-2 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-300 transition-transform text-sm`}
+              className="w-full mt-3 bg-gradient-to-r from-blue-400 via-blue-500 to-blue-400 hover:from-blue-500 hover:via-blue-600 text-white font-medium py-2 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-300 transition-transform hover:scale-[1.03] text-sm"
               variants={itemVariants}
             >
               {isLoading ? (
@@ -352,30 +243,32 @@ const Signup = () => {
                       d="M4 12a8 8 0 018-8v8z"
                     />
                   </svg>
-                  Creating...
+                  Please wait..
                 </div>
               ) : (
-                "Create Account"
+                "Login"
               )}
             </motion.button>
           </motion.form>
+          {/* Signup link */}
           <motion.div className="mt-5 text-center" variants={itemVariants}>
             <span className="text-xs text-gray-500">
-              Already have an account?{" "}
+              Don&apos;t have an account?{" "}
               <a
-                href="/login"
+                href="/register"
                 className="text-blue-500 font-medium hover:underline"
               >
-                Login
+                Signup
               </a>
             </span>
           </motion.div>
         </motion.div>
       </div>
-      <div className="hidden md:flex w-full md:w-1/2 items-center justify-center bg-transparent">
+      {/* Right side: Illustration */}
+      <div className="hidden md:flex w-1/2 items-center justify-center bg-transparent">
         <img
           src={image}
-          alt=""
+          alt="login illustration"
           className="w-full h-screen object-cover rounded-r-2xl"
           aria-hidden="true"
         />
@@ -384,4 +277,4 @@ const Signup = () => {
   );
 };
 
-export default Signup;
+export default Login;
