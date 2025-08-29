@@ -5,7 +5,7 @@ const ProductDetail = () => {
     return(
         <div>
             <ProductContent />
-            <Newsletter />
+            {/* <Newsletter /> */}
             <Footer />
         </div>
     )

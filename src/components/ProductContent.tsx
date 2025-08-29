@@ -1,11 +1,11 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import sink from "../assets/sinka.jpg";
-import bathrrom from "../assets/PremiumShowcase.png";
+import bathroom from "../assets/PremiumShowcase.png";
 import shop from "../assets/PremiumShowcase.png";
+import { Heart, Star } from "lucide-react";
+import { useProductDetailMutation } from "@/redux/api/api";
+import { useParams } from "react-router-dom";
 
-import { ChevronDown } from "lucide-react";
-
-/* ---------- Types ---------- */
 type Product = {
   id: number;
   title: string;
@@ -16,16 +16,8 @@ type Product = {
   description: string;
   specs: { label: string; value: string }[];
   installation: string[];
-  reviews: {
-    id: number;
-    author: string;
-    date: string;
-    rating: number;
-    text: string;
-  }[];
 };
 
-/* ---------- Helpers ---------- */
 const inr = (v: number) =>
   new Intl.NumberFormat("en-IN", {
     style: "currency",
@@ -43,493 +35,319 @@ const COLOR_MAP: Record<string, string> = {
   beige: "#EDE8DA",
 };
 
-/* ---------- Icons ---------- */
-function IconStar({
-  className = "w-4 h-4 inline-block fill-gray-200",
-}: {
-  className?: string;
-}) {
+function HeartFillIcon(props: React.SVGProps<SVGSVGElement>) {
   return (
-    <svg viewBox="0 0 24 24" className={className} aria-hidden>
-      <path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z" />
+    <svg viewBox="0 0 24 24" fill="currentColor" {...props}>
+      <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.77 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z" />
     </svg>
   );
 }
 
-function IconShare({ className = "w-6 h-6" }: { className?: string }) {
+function HeartOutlineIcon(props: React.SVGProps<SVGSVGElement>) {
   return (
     <svg
       viewBox="0 0 24 24"
-      className={className}
       fill="none"
       stroke="currentColor"
-      strokeWidth="1.5"
+      strokeWidth="2"
+      {...props}
     >
-      <path
-        d="M4 12v7a1 1 0 001 1h14a1 1 0 001-1v-7"
-        strokeLinecap="round"
-        strokeLinejoin="round"
-      />
-      <path d="M16 6l-4-4-4 4" strokeLinecap="round" strokeLinejoin="round" />
-      <path d="M12 2v13" strokeLinecap="round" strokeLinejoin="round" />
+      <path d="M20.84 4.61c-1.54-1.5-4.04-1.5-5.59 0L12 7.88 8.75 4.61c-1.55-1.5-4.05-1.5-5.6 0-1.74 1.69-1.74 4.41 0 6.1l6.17 6.18a.996.996 0 0 0 1.41 0l6.16-6.18c1.75-1.69 1.75-4.41 0-6.1z" />
     </svg>
   );
 }
 
-function IconHeart({ className = "w-6 h-6" }: { className?: string }) {
-  return (
-    <svg
-      viewBox="0 0 24 24"
-      className={className}
-      fill="none"
-      stroke="currentColor"
-      strokeWidth="1.5"
-    >
-      <path
-        d="M20.84 4.61a5.5 5.5 0 00-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 00-7.78 7.78L12 21.23l8.84-8.84a5.5 5.5 0 000-7.78z"
-        strokeLinecap="round"
-        strokeLinejoin="round"
-      />
-    </svg>
-  );
-}
-
-/* ---------- Review Item ---------- */
-function ReviewItem({ r }: { r: Product["reviews"][number] }) {
-  return (
-    <div className="flex gap-5 py-6 border-b border-gray-100">
-      <div className="flex-none">
-        <div className="w-12 h-12 rounded-full bg-gradient-to-r from-blue-400 to-indigo-500 flex items-center justify-center text-lg font-semibold text-white shadow">
-          {r.author.charAt(0)}
-        </div>
-      </div>
-      <div className="flex-1">
-        <div className="flex items-center justify-between">
-          <div className="font-[Poppins] font-semibold text-base">
-            {r.author}
-          </div>
-          <div className="text-sm text-gray-400">{r.date}</div>
-        </div>
-        <div className="flex items-center gap-1 mt-1">
-          {Array.from({ length: 5 }).map((_, i) => (
-            <IconStar
-              key={i}
-              className={`w-5 h-5 ${
-                i < r.rating ? "fill-yellow-400" : "fill-gray-200"
-              }`}
-            />
-          ))}
-        </div>
-        <p className="text-base text-gray-700 mt-3">{r.text}</p>
-      </div>
-    </div>
-  );
-}
-
-/* ---------- Product Data ---------- */
-const sampleProduct: Product = {
-  id: 1,
-  title: "Premium Ceramic Basin",
-  price: 7568,
-  category: "Wash Basin",
-  images: [bathrrom, bathrrom, sink],
-  colors: ["black", "light", "beige"],
-  description:
-    "Upgrade your bathroom with this sleek, premium rectangular countertop basin. Crafted from high-gloss ceramic with a smooth finish, it combines functionality and elegance.",
-  specs: [
-    { label: "Dimensions", value: "60cm (W) × 40cm (D) × 15cm (H)" },
-    { label: "Material", value: "High-grade ceramic" },
-    { label: "Weight", value: "12.5 kg" },
-    { label: "Warranty", value: "10 years" },
-  ],
-  installation: [
-    "Wall-mounted bracket system included",
-    "Requires solid wall construction",
-    "Professional installation recommended",
-    "Standard waste fitting (32mm)",
-  ],
-  reviews: [
-    {
-      id: 1,
-      author: "Abel Tesfaye",
-      date: "Dec 9, 2022",
-      rating: 5,
-      text: "Amazing quality! Perfect for a professional look. Will definitely reorder.",
-    },
-    {
-      id: 2,
-      author: "Selena Hadid",
-      date: "Dec 9, 2022",
-      rating: 4,
-      text: "Comfortable and practical product for everyday use.",
-    },
-  ],
-};
-
-/* ---------- More Like This Sample Products ---------- */
-const moreLikeThis: Product[] = [
-  {
-    id: 2,
-    title: "Modern Wall-mounted Basin",
-    price: 6799,
-    category: "Wash Basin",
-    images: [shop],
-    colors: ["white", "light"],
-    description: "Stylish wall-mounted basin with elegant finish.",
-    specs: [],
-    installation: [],
-    reviews: [],
-  },
-  {
-    id: 3,
-    title: "Classic Ceramic Wash Basin",
-    price: 5899,
-    category: "Wash Basin",
-    images: [sink],
-    colors: ["beige", "black"],
-    description: "Classic design with premium ceramic material.",
-    specs: [],
-    installation: [],
-    reviews: [],
-  },
-  {
-    id: 4,
-    title: "Compact Basin with Tap Hole",
-    price: 5200,
-    category: "Wash Basin",
-    images: [bathrrom],
-    colors: ["white", "blue"],
-    description: "Space-saving basin with built-in tap hole.",
-    specs: [],
-    installation: [],
-    reviews: [],
-  },
-];
-
-/* ---------- Main Component ---------- */
 export default function ProductDetail() {
-  const [open, setOpen] = useState<string | null>(null);
-  const toggle = (section: string) => {
-    setOpen(open === section ? null : section);
+  const params = useParams();
+  const [trigger, { data, isLoading,  isError }] = useProductDetailMutation();
+
+  const dummyProduct: Product = {
+    id: 101,
+    title: "Modern Bathroom Sink",
+    price: 7999,
+    category: "Bathroom",
+    images: [bathroom, shop, sink],
+    colors: ["black", "light", "beige"],
+    description:
+      "A sleek and modern bathroom sink made from high-quality materials, perfect for your contemporary home.",
+    specs: [
+      { label: "Material", value: "Ceramic" },
+      { label: "Dimensions", value: "60cm x 45cm x 20cm" },
+      { label: "Weight", value: "8kg" },
+    ],
+    installation: [
+      "Mount the sink securely to the wall.",
+      "Connect water supply lines carefully.",
+      "Seal edges with waterproof sealant.",
+    ],
   };
-  const p = sampleProduct;
+
+  const [product, setProduct] = useState<Product>(dummyProduct);
   const [mainIndex, setMainIndex] = useState(0);
-  const [selectedColor, setSelectedColor] = useState<string | null>(
-    p.colors[0]
-  );
+  const [selectedColor, setSelectedColor] = useState<string>("black");
   const [wish, setWish] = useState(false);
+  const [adding, setAdding] = useState(false);
 
-  return (
-    <div className="min-h-screen bg-gray-50 px-4 sm:px-6 md:px-10 py-6">
-      <div className="mx-auto max-w-7xl">
-        {/* Breadcrumb */}
-        <nav className="text-[10px] sm:text-xs text-gray-500 mb-4">
-          <span className="font-[Poppins] font-semibold uppercase tracking-wide">
-            Home
-          </span>
-          <span className="mx-2">/</span>
-          <span className="font-[Poppins] font-semibold uppercase text-gray-400">
-            {p.title}
-          </span>
-        </nav>
+  useEffect(() => {
+    if (params.prodId) {
+      trigger({ product_id: params.prodId });
+    }
+  }, [params.prodId, trigger]);
 
-        <div className="flex flex-col lg:flex-row gap-10 w-full">
-          {/* Left: Gallery */}
-          <div className="flex w-full lg:w-[55%] flex-col">
-            <div className="rounded-xl w-full shadow-xl">
-              <div className="relative rounded-2xl overflow-hidden">
-                <img
-                  src={p.images[mainIndex]}
-                  alt={p.title}
-                  className="w-full h-[280px] sm:h-[400px] lg:h-[500px] object-cover rounded-2xl transition-transform duration-500 hover:scale-105"
-                />
+  useEffect(() => {
+    if (!data) return;
+
+    const mappedProduct: Product = {
+      id: Number(data.id),
+      title: String(data.product_name),
+      price: Number(data.price),
+      category: String(data.categories ?? ""),
+      images: [bathroom, shop, sink], // Replace with data.images if available
+      colors: ["black", "light", "beige"], // Replace with data.colors if available
+      description: String(data.description ?? ""),
+      specs: data.specs ?? [],
+      installation: data.installation ?? [],
+    };
+
+    setProduct(mappedProduct);
+    setSelectedColor(mappedProduct.colors?.[0] ?? null);
+    setMainIndex(0);
+  }, [data]);
+
+  const handleAddToCart = () => {
+    if (adding) return;
+    setAdding(true);
+    // Simulate add to cart operation and reset after animation duration
+    setTimeout(() => {
+      setAdding(false);
+      // Here you could also trigger a global cart update or confirmation toast
+    }, 1200);
+  };
+
+  function LoadingSkeleton() {
+    return (
+      <div className="min-h-screen bg-gray-50 px-4 sm:px-6 md:px-10 py-6">
+        <div className="mx-auto max-w-7xl animate-pulse">
+          <div className="h-3 w-24 bg-gray-200 rounded mb-4" />
+          <div className="flex flex-col lg:flex-row gap-10">
+            <div className="w-full lg:w-[55%]">
+              <div className="h-[280px] sm:h-[400px] lg:h-[500px] bg-gray-200 rounded-2xl" />
+              <div className="mt-4 flex gap-3">
+                {[...Array(3)].map((_, i) => (
+                  <div
+                    key={i}
+                    className="w-24 sm:w-32 md:w-40 h-20 bg-gray-200 rounded-xl"
+                  />
+                ))}
               </div>
             </div>
-
-            {/* Thumbnails with scroll on mobile */}
-            <div className="mt-4 flex w-full overflow-x-auto gap-3 pb-2 hide-scrollbar">
-              {p.images.map((img, i) => (
-                <button
-                  key={i}
-                  onClick={() => setMainIndex(i)}
-                  className={`flex-shrink-0 rounded-xl overflow-hidden border transition ${
-                    i === mainIndex
-                      ? "border-blue-500 ring-2 ring-blue-200 shadow scale-105"
-                      : "border-gray-200 hover:scale-105 hover:shadow"
-                  }`}
-                >
-                  <img
-                    src={img}
-                    alt={`${p.title} ${i + 1}`}
-                    className="w-24 sm:w-32 md:w-40 h-20 object-cover"
-                  />
-                </button>
-              ))}
+            <div className="w-full lg:w-[45%] space-y-4">
+              <div className="h-6 w-28 bg-gray-200 rounded" />
+              <div className="h-8 w-3/4 bg-gray-200 rounded" />
+              <div className="h-6 w-32 bg-gray-200 rounded" />
+              <div className="h-32 w-full bg-gray-200 rounded" />
+              <div className="h-10 w-full bg-gray-200 rounded" />
             </div>
           </div>
+        </div>
+      </div>
+    );
+  }
 
-          {/* Right: Info */}
-          <div className="flex flex-col w-full lg:w-[45%] space-y-8 mt-6 lg:mt-0">
-            {/* Title & Price */}
-            <div>
-              <div className="inline-block px-3 py-1 rounded-full bg-gray-100 text-xs sm:text-sm text-gray-600 mb-3">
-                {p.category}
-              </div>
-              <h1 className="font-[Poppins] font-extrabold text-2xl sm:text-3xl lg:text-4xl tracking-tight text-gray-900">
-                {p.title}
-              </h1>
-              <p className="text-xl sm:text-2xl font-semibold text-blue-600 mt-2">
-                {inr(p.price)}
-              </p>
-              <div className="flex items-center gap-2 text-sm sm:text-base text-gray-600 mt-1">
-                <IconStar className="w-4 h-4 sm:w-5 sm:h-5 fill-yellow-400" />
-                <span className="font-semibold text-gray-800">4.8</span>
-                <span className="text-gray-400">(76 reviews)</span>
-              </div>
+  if (isLoading) {
+    return <LoadingSkeleton />;
+  }
+
+  if (isError) {
+    return (
+      <div className="min-h-screen flex items-center justify-center bg-gray-50">
+        <p className="text-red-600 font-semibold">Failed to load product.</p>
+      </div>
+    );
+  }
+
+  return (
+    <div className="min-h-screen bg-white px-6 py-8 md:px-16 lg:px-24">
+      <div className="max-w-6xl mx-auto flex flex-col lg:flex-row gap-12">
+        {/* Left image gallery + color selection */}
+        <div className="lg:w-[55%] flex flex-col">
+          <div className="rounded-2xl overflow-hidden shadow-lg">
+            <img
+              src={product.images[mainIndex]}
+              alt={product.title}
+              className="w-full h-[350px] md:h-[450px] lg:h-[400px] object-cover transition-transform duration-400 hover:scale-105 cursor-pointer rounded-2xl"
+            />
+          </div>
+          <div className="flex gap-4 mt-6  hide-scrollbar">
+            {product.images.map((img, i) => (
+              <button
+                key={i}
+                onClick={() => setMainIndex(i)}
+                className={`flex-shrink-0 rounded-xl overflow-hidden border-2 ${
+                  i === mainIndex
+                    ? "border-blue-600 shadow-lg scale-110"
+                    : "border-gray-300 hover:border-blue-400"
+                } transition-transform duration-300`}
+                aria-label={`View image ${i + 1}`}
+              >
+                <img
+                  src={img}
+                  alt={`${product.title} thumbnail ${i + 1}`}
+                  className="w-24 h-20 object-cover"
+                />
+              </button>
+            ))}
+          </div>
+
+          {/* Color selection */}
+          {/* <div className="mt-8">
+            <h2 className="text-base font-semibold mb-3">Available Colors</h2>
+            <div className="flex gap-4 flex-wrap">
+              {product.colors.map((c) => {
+                const selected = selectedColor === c;
+                const bg = COLOR_MAP[c] ?? c;
+                return (
+                  <button
+                    key={c}
+                    onClick={() => setSelectedColor(c)}
+                    className={`w-9 h-9 rounded-full border-2 flex items-center justify-center transition-transform ${
+                      selected
+                        ? "ring-2 ring-indigo-500 border-transparent scale-110"
+                        : "border-gray-300 hover:border-indigo-400 hover:scale-105"
+                    }`}
+                    style={{ backgroundColor: bg }}
+                    aria-label={`Select color ${c}`}
+                  >
+                    {selected && (
+                      <svg
+                        className="w-5 h-5 text-white"
+                        viewBox="0 0 24 24"
+                        fill="none"
+                      >
+                        <path
+                          d="M20 6L9 17L4 12"
+                          stroke="currentColor"
+                          strokeWidth="2"
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                        />
+                      </svg>
+                    )}
+                  </button>
+                );
+              })}
+            </div>
+          </div> */}
+        </div>
+
+        {/* Right product info */}
+        <div className="lg:w-[45%] flex flex-col justify-between">
+          <div>
+            <div className="text-sm font-semibold text-gray-500 uppercase mb-1 tracking-wide">
+              {product.category}
+            </div>
+            <h1 className="text-3xl font-extrabold text-gray-900 mb-3">
+              {product.title}
+            </h1>
+            <div className="text-2xl font-semibold text-indigo-600 mb-2">
+              {inr(product.price)}
+            </div>
+            <div className="w-[90%] flex mb-4 items-center justify-center gap-6">
+              <button
+                onClick={handleAddToCart}
+                disabled={adding}
+                className={`flex-grow flex  justify-center gap-2 bg-gradient-to-r from-indigo-600 to-blue-600 text-white py-3 rounded-xl font-semibold text-base shadow-lg hover:shadow-xl active:scale-95 transition transform ${
+                  adding ? "cursor-wait opacity-70" : ""
+                }`}
+                aria-label="Add to Cart"
+              >
+                <svg
+                  className={`w-6 h-6 transition-transform ${
+                    adding ? "animate-bounce" : ""
+                  }`}
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth="2"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    d="M3 3h2l.4 2M7 13h10l4-8H5.4"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                  />
+                  <circle cx="7" cy="21" r="1" />
+                  <circle cx="17" cy="21" r="1" />
+                </svg>
+                {adding ? "Added" : "Add to Cart"}
+              </button>
+
+              <button
+                aria-label={wish ? "Remove from wishlist" : "Add to wishlist"}
+                onClick={() => setWish(!wish)}
+                className={`w-12 h-12 rounded-full border flex items-center justify-center transition-colors transform ${
+                  wish
+                    ? "text-red-600 border-red-600 bg-red-100 hover:bg-red-200 scale-110"
+                    : "text-gray-600 border-gray-300 hover:bg-gray-100 hover:scale-105"
+                }`}
+              >
+                {wish ? (
+                  <HeartFillIcon className="w-6 h-6" />
+                ) : (
+                  <Heart className="w-6 h-6" />
+                )}
+              </button>
+            </div>
+            <div className="flex items-center gap-2 mb-6 text-gray-700">
+              <Star className="w-5 h-5 text-yellow-400" />
+              <span className="font-semibold">4.8</span>
+              <span className="text-sm text-gray-400">(76 reviews)</span>
             </div>
 
-            {/* Accordion Sections */}
-            <div className=" rounded-xl bg-white shadow-md divide-y divide-gray-200 overflow-hidden">
-              {/* Description */}
-              <button
-                type="button"
-                onClick={() => toggle("description")}
-                className="flex justify-between items-center w-full px-6 py-4 text-left text-gray-900 font-semibold text-lg sm:text-xl transition-colors duration-200 hover:bg-gray-50 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-400 rounded-t-xl"
-                aria-expanded={open === "description"}
-                aria-controls="description-panel"
-              >
-                <span>Description</span>
-                <ChevronDown
-                  className={`w-6 h-6 text-gray-500 transform transition-transform duration-300 ${
-                    open === "description"
-                      ? "rotate-180 text-blue-600"
-                      : "text-gray-500"
-                  }`}
-                />
-              </button>
-              <div
-                id="description-panel"
-                className={`px-6 overflow-hidden transition-all duration-300 ease-in-out ${
-                  open === "description" ? "max-h-screen py-4" : "max-h-0"
-                } text-gray-700 text-sm sm:text-base`}
-              >
-                {p.description}
-              </div>
+            {/* Description */}
+            <section className="mb-6">
+              <h2 className="text-lg font-semibold text-gray-900 mb-2">
+                Description
+              </h2>
+              <p className="text-gray-700 text-sm">
+                {product.description || dummyProduct.description}
+              </p>
+            </section>
 
-              {/* Specs */}
-              <button
-                type="button"
-                onClick={() => toggle("specs")}
-                className="flex justify-between items-center w-full px-6 py-4 text-left text-gray-900 font-semibold text-lg sm:text-xl transition-colors duration-200 hover:bg-gray-50 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-400"
-                aria-expanded={open === "specs"}
-                aria-controls="specs-panel"
-              >
-                <span>Specifications</span>
-                <ChevronDown
-                  className={`w-6 h-6 text-gray-500 transform transition-transform duration-300 ${
-                    open === "specs"
-                      ? "rotate-180 text-blue-600"
-                      : "text-gray-500"
-                  }`}
-                />
-              </button>
-              <div
-                id="specs-panel"
-                className={`px-6 overflow-hidden transition-all duration-300 ease-in-out ${
-                  open === "specs" ? "max-h-screen py-4" : "max-h-0"
-                } text-gray-700 text-sm sm:text-base`}
-              >
-                <ul className="list-disc pl-5 space-y-2">
-                  {p.specs.map((s) => (
-                    <li key={s.label}>
-                      <strong className="font-semibold">{s.label}:</strong>{" "}
-                      {s.value}
+            {/* Specifications */}
+            <section className="mb-6">
+              <h2 className="text-lg font-semibold text-gray-900 mb-2">
+                Specifications
+              </h2>
+              {dummyProduct.specs.length > 0 ? (
+                <ul className="list-disc pl-5 space-y-1 text-gray-700 text-sm">
+                  {dummyProduct.specs.map(({ label, value }) => (
+                    <li key={label}>
+                      <strong>{label}:</strong> {value}
                     </li>
                   ))}
                 </ul>
-              </div>
-
-              {/* Installation */}
-              <button
-                type="button"
-                onClick={() => toggle("installation")}
-                className="flex justify-between items-center w-full px-6 py-4 text-left text-gray-900 font-semibold text-lg sm:text-xl transition-colors duration-200 hover:bg-gray-50 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-400 rounded-b-xl"
-                aria-expanded={open === "installation"}
-                aria-controls="installation-panel"
-              >
-                <span>Installation</span>
-                <ChevronDown
-                  className={`w-6 h-6 text-gray-500 transform transition-transform duration-300 ${
-                    open === "installation"
-                      ? "rotate-180 text-blue-600"
-                      : "text-gray-500"
-                  }`}
-                />
-              </button>
-              <div
-                id="installation-panel"
-                className={`px-6 overflow-hidden transition-all duration-300 ease-in-out ${
-                  open === "installation" ? "max-h-screen py-4" : "max-h-0"
-                } text-gray-700 text-sm sm:text-base`}
-              >
-                <ul className="list-disc pl-5 space-y-2">
-                  {p.installation.map((i, idx) => (
-                    <li key={idx}>{i}</li>
-                  ))}
-                </ul>
-              </div>
-            </div>
-
-            {/* Colors */}
-            <section>
-              <h2 className="text-sm sm:text-base font-semibold mb-2">
-                Available Colors
-              </h2>
-              <div className="flex items-center gap-3 sm:gap-4 flex-wrap">
-                {p.colors.map((c) => {
-                  const selected = selectedColor === c;
-                  const bg = COLOR_MAP[c] ?? c;
-                  return (
-                    <button
-                      key={c}
-                      onClick={() => setSelectedColor(c)}
-                      className={`w-8 h-8 sm:w-9 sm:h-9 rounded-full flex items-center justify-center border-2 transition ${
-                        selected
-                          ? "ring-2 ring-blue-500 border-transparent scale-110"
-                          : "border-gray-300 hover:scale-105"
-                      }`}
-                      style={{ background: bg }}
-                      aria-label={`Select color ${c}`}
-                    >
-                      {selected && (
-                        <svg
-                          className="w-4 h-4 sm:w-5 sm:h-5 text-white"
-                          viewBox="0 0 24 24"
-                          fill="none"
-                        >
-                          <path
-                            d="M20 6L9 17L4 12"
-                            stroke="currentColor"
-                            strokeWidth="2"
-                            strokeLinecap="round"
-                            strokeLinejoin="round"
-                          />
-                        </svg>
-                      )}
-                    </button>
-                  );
-                })}
-              </div>
+              ) : (
+                <p className="text-gray-400">No specifications available.</p>
+              )}
             </section>
 
-            {/* Add to Cart & Wishlist Buttons */}
-            <div className="flex gap-4">
-              <button className="flex-grow bg-gradient-to-r from-blue-600 to-indigo-500 text-white px-6 py-3 sm:py-4 rounded-full font-[Poppins] font-semibold text-lg shadow-lg hover:shadow-xl hover:scale-[1.02] active:scale-[0.97] transition">
-                Add to Cart
-              </button>
-              <button
-                onClick={() => setWish(!wish)}
-                aria-label={wish ? "Remove from wishlist" : "Add to wishlist"}
-                className={`flex items-center justify-center w-12 h-12 rounded-full border hover:bg-gray-200 transition ${
-                  wish ? "text-red-600" : "text-gray-600"
-                }`}
-              >
-                <IconHeart className="w-6 h-6" />
-              </button>
-            </div>
+            {/* Installation */}
+            <section>
+              <h2 className="text-lg font-semibold text-gray-900 mb-2">
+                Installation
+              </h2>
+              {dummyProduct.installation.length > 0 ? (
+                <ul className="list-disc pl-5 space-y-1 text-gray-700 text-sm">
+                  {dummyProduct.installation.map((step, idx) => (
+                    <li key={idx}>{step}</li>
+                  ))}
+                </ul>
+              ) : (
+                <p className="text-gray-400">No installation info.</p>
+              )}
+            </section>
           </div>
         </div>
-
-        {/* More Like This Section */}
-        <section className="mt-14 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <h2 className="font-[Poppins] font-bold text-3xl mb-8 text-gray-900">
-            More Like This
-          </h2>
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
-            {moreLikeThis.map((product) => (
-              <div
-                key={product.id}
-                className="bg-white rounded-xl shadow-lg overflow-hidden cursor-pointer hover:shadow-2xl transition-shadow duration-300"
-                title={product.title}
-              >
-                <img
-                  src={product.images[0]}
-                  alt={product.title}
-                  className="w-full h-56 object-cover transition-transform duration-400 hover:scale-105"
-                />
-                <div className="p-6 space-y-3">
-                  <h3
-                    className="font-semibold text-xl text-gray-900 truncate"
-                    title={product.title}
-                  >
-                    {product.title}
-                  </h3>
-                  <p className="text-blue-600 font-bold text-lg">
-                    {inr(product.price)}
-                  </p>
-                  {product.category && (
-                    <p className="text-sm text-gray-500 font-medium uppercase tracking-wide">
-                      {product.category}
-                    </p>
-                  )}
-                  <div className="flex items-center gap-3 flex-wrap">
-                    {product.colors.map((c) => (
-                      <span
-                        key={c}
-                        className="w-6 h-6 rounded-full border border-gray-300 shadow-sm"
-                        style={{ backgroundColor: COLOR_MAP[c] ?? c }}
-                        title={c}
-                      />
-                    ))}
-                  </div>
-                  {product.description && (
-                    <p className="text-gray-600 text-sm line-clamp-3">
-                      {product.description}
-                    </p>
-                  )}
-                  <button
-                    className="mt-3 w-full text-center bg-gradient-to-r from-blue-600 to-indigo-500 text-white py-2 rounded-full font-semibold text-sm hover:from-blue-700 hover:to-indigo-600 transition-colors"
-                    aria-label={`View details of ${product.title}`}
-                  >
-                    View Details
-                  </button>
-                </div>
-              </div>
-            ))}
-          </div>
-        </section>
-
-        {/* Reviews */}
-        <section className="mt-12 sm:mt-16  mx-auto px-4 sm:px-0">
-          <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between mb-8 gap-4">
-            <h2 className="font-[Poppins] font-bold text-2xl sm:text-3xl text-gray-900">
-              Reviews
-            </h2>
-            <div className="flex items-center text-sm text-gray-600">
-              <label htmlFor="sortReviews" className="mr-2 font-medium">
-                Sort by:
-              </label>
-              <select
-                id="sortReviews"
-                className="ml-2 px-3 py-2 border border-gray-300 rounded-md bg-white text-gray-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition"
-              >
-                <option>Suggested</option>
-                <option>Newest</option>
-                <option>Highest Rating</option>
-                <option>Lowest Rating</option>
-              </select>
-            </div>
-          </div>
-          <div className="bg-white rounded-xl border border-gray-300 p-6 shadow-lg divide-y divide-gray-200">
-            {p.reviews.length ? (
-              p.reviews.map((r) => <ReviewItem key={r.id} r={r} />)
-            ) : (
-              <p className="text-center text-gray-500 italic py-6">
-                No reviews yet.
-              </p>
-            )}
-          </div>
-        </section>
       </div>
     </div>
   );

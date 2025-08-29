@@ -37,7 +37,19 @@ const allApi = apiReducer.injectEndpoints({
         },
       }),
     }),
+
+    productDetail: builder.mutation({
+      query: (params) => ({
+        url: "/description-product/",
+        method: "POST",
+        body: params,
+        headers: {
+          "Content-Type": "application/json",
+          accept: "application/json",
+        },
+      }),
+    }),
   }),
 });
-export const { useLazyProductsQuery, useSignUpMutation, useLoginMutation } =
+export const { useLazyProductsQuery, useSignUpMutation, useLoginMutation , useProductDetailMutation} =
   allApi;

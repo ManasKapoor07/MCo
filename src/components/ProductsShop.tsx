@@ -7,7 +7,7 @@ import {
   Star,
   X,
 } from "lucide-react";
-import { useSearchParams } from "react-router-dom";
+import { useNavigate, useSearchParams } from "react-router-dom";
 import sink from "../assets/PremiumShowcase.png"; // Placeholder image
 import { useLazyProductsQuery } from "@/redux/api/api";
 
@@ -25,7 +25,7 @@ const colors = ["#FFFFFF", "#000000", "#6B7280", "#0EA5E9", "#3B82F6"];
 
 export default function BestShop() {
   const [searchParams, setSearchParams] = useSearchParams();
-
+  const navigate = useNavigate();
   // All temporary states used in UI inputs before applying
   const [tempFilters, setTempFilters] = useState({
     brands: new Set<string>(),
@@ -230,6 +230,7 @@ export default function BestShop() {
     setSearchParams(params);
     setShowFilters(false);
   };
+
 
   return (
     <div className="min-h-screen py-10 px-2 sm:px-4 md:px-6">
@@ -579,6 +580,7 @@ export default function BestShop() {
               products.map((p) => (
                 <div
                   key={p.id}
+                  onClick={() => navigate(`/product/${p.id}`)}
                   className="bg-white rounded-xl shadow-md hover:shadow-xl border border-gray-200 transition-transform duration-200 hover:-translate-y-1 flex flex-col"
                 >
                   <div className="relative rounded-t-lg overflow-hidden">
@@ -637,7 +639,6 @@ export default function BestShop() {
                         <span className="px-3 py-1 bg-gray-100 rounded-full font-semibold">
                           {p.delivery}
                         </span>
-
                       </div>
                       <button className="mt-2 w-full rounded-lg bg-blue-600 hover:bg-blue-700 text-white font-semibold text-base py-2 shadow-md transition">
                         Add to Cart
