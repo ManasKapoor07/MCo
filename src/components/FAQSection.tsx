@@ -29,7 +29,7 @@ const FAQItem = ({ faq, isOpen, onClick }: any) => (
       className="w-full px-6 py-4 text-left flex justify-between items-center bg-white hover:bg-gray-100 transition"
       onClick={onClick}
     >
-      <span className="font-[Poppins] font-medium text-[18px] leading-[28px] tracking-[0] pb-0">{faq.question}</span>
+      <span className="  font-medium text-[18px] leading-[28px] tracking-[0] pb-0">{faq.question}</span>
       <span className="text-2xl text-gray-700">{isOpen ? '−' : '+'}</span>
     </button>
     <div
@@ -37,7 +37,7 @@ const FAQItem = ({ faq, isOpen, onClick }: any) => (
         isOpen ? 'max-h-60 pb-4' : 'max-h-0'
       }`}
     >
-      {isOpen && <p className="font-[Poppins] text-[16px] leading-[24px] tracking-[0] text-gray-800 text-justify">{faq.answer}</p>}
+      {isOpen && <p className="  text-[16px] leading-[24px] tracking-[0] text-gray-800 text-justify">{faq.answer}</p>}
     </div>
   </div>
 );
@@ -54,10 +54,10 @@ const FAQSection = () => {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-16 py-8">
         <div className="grid md:grid-cols-[1.3fr_1fr_1fr] gap-12">
           <div>
-            <h2 className="font-[Poppins] font-semibold text-4xl tracking-[0] mb-4 text-[#1c1c1c]">
+            <h2 className="  font-semibold text-4xl tracking-[0] mb-4 text-[#1c1c1c]">
               Frequently Asked Questions
             </h2>
-            <p className="font-[Poppins] text-gray-800 text-[14px] leading-[24px] text-justify">
+            <p className="  text-gray-800 text-[14px] leading-[24px] text-justify">
               We're always happy to discuss your questions directly, but here are answers to some
               of the most common queries we receive about residential and buy-to-let mortgages.
             </p>

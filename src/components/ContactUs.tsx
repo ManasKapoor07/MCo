@@ -8,7 +8,7 @@ const ContactUs = () => {
         {/* Header with Title & Social Icons */}
        <div className="grid grid-cols-1 lg:grid-cols-[2fr_2fr_1fr] items-start">
   <div className="lg:col-span-2">
-    <p className="font-[Poppins] text-[16px] leading-[100%] tracking-[1.63px] uppercase text-[#1447E6] font-bold mb-2">
+    <p className="  text-[16px] leading-[100%] tracking-[1.63px] uppercase text-[#1447E6] font-bold mb-2">
       Contact Us
     </p>
     <h2 className="mt-2 text-3xl sm:text-4xl font-bold text-gray-900 leading-tight w-full">
@@ -117,25 +117,25 @@ const ContactUs = () => {
         <div className="bg-[rgba(68,68,68,0.075)] px-8 py-16 mt-8">
           <div className="max-w-4xl mx-auto grid grid-cols-1 md:grid-cols-[1.1fr_1fr_1fr] gap-12">
             <div className="md:col-span-1">
-              <p className="mt-2 text-[16px] leading-[24px] font-[400] font-[Poppins] text-gray-900 text-justify max-w-2xl">Contact Info</p>
-              <h3 className="mt-2 font-[Poppins] font-semibold text-[28px] leading-[130%] text-gray-900 ">
+              <p className="mt-2 text-[16px] leading-[24px] font-[400]   text-gray-900 text-justify max-w-2xl">Contact Info</p>
+              <h3 className="mt-2   font-semibold text-[28px] leading-[130%] text-gray-900 ">
                 We are always happy to assist you
               </h3>
             </div>
             <div className="space-y-6 md:col-span-2 grid grid-cols-1 md:grid-cols-2 gap-12">
               <div>
-                <p className="font-[Poppins] font-semibold text-[16px] leading-[100%] text-justify">Email Address</p>
+                <p className="  font-semibold text-[16px] leading-[100%] text-justify">Email Address</p>
                 <div className="mt-6 w-[21px] h-[2.5px] bg-black opacity-100 rotate-0"></div>
-                <p className="mt-6 font-[Poppins] font-semibold text-[16px] leading-[100%] text-justify">help@info.com</p>
-                <p className="font-[Poppins] font-normal text-[14px] leading-[24px] tracking-[0] mt-6 text-[#1c1c1c] w-2/3">
+                <p className="mt-6   font-semibold text-[16px] leading-[100%] text-justify">help@info.com</p>
+                <p className="  font-normal text-[14px] leading-[24px] tracking-[0] mt-6 text-[#1c1c1c] w-2/3">
                   Assistance hours: Monday - Friday 6 am to 8 pm EST
                 </p>
               </div>
               <div>
-                <p className="font-[Poppins] font-semibold text-[16px] leading-[100%] text-justify">Number</p>
+                <p className="  font-semibold text-[16px] leading-[100%] text-justify">Number</p>
                 <div className="mt-6 w-[21px] h-[2.5px] bg-black opacity-100 rotate-0"></div>
-                <p className="mt-6 font-[Poppins] font-semibold text-[16px] leading-[100%] text-justify">(808) 998-34256</p>
-                <p className="font-[Poppins] font-normal text-[14px] leading-[24px] tracking-[0] mt-6 text-[#1c1c1c] w-2/3">
+                <p className="mt-6   font-semibold text-[16px] leading-[100%] text-justify">(808) 998-34256</p>
+                <p className="  font-normal text-[14px] leading-[24px] tracking-[0] mt-6 text-[#1c1c1c] w-2/3">
                   Assistance hours: Monday - Friday 6 am to 8 pm EST
                 </p>
               </div>
@@ -153,7 +153,7 @@ const ContactUs = () => {
             >
               <path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5S10.62 6.5 12 6.5s2.5 1.12 2.5 2.5S13.38 11.5 12 11.5z" />
             </svg>
-            <p className="font-[Poppins] font-normal text-[18px] leading-[24px] tracking-[0]">Mumbai Office</p>
+            <p className="  font-normal text-[18px] leading-[24px] tracking-[0]">Mumbai Office</p>
           </div>
           <address className="not-italic text-gray-900 font-medium ml-10">
             Shop No. 9, Waghani Vihar,

@@ -192,8 +192,8 @@ export default function RangeSlider({
       </div>
 
        <div className="flex justify-between items-center mb-3 text-sm">
-        <div className="font-[Poppins] font-normal text-sm leading-none tracking-normal text-center">{lowLabel}</div>
-        <div className="font-[Poppins] font-normal text-sm leading-none tracking-normal text-center">{highLabel}</div>
+        <div className="  font-normal text-sm leading-none tracking-normal text-center">{lowLabel}</div>
+        <div className="  font-normal text-sm leading-none tracking-normal text-center">{highLabel}</div>
       </div>
 
       {/* small CSS for better pointer target & visual (thumb size controlled via inline styles above) */}

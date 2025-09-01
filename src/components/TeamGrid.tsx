@@ -32,7 +32,7 @@ const teamMembers: TeamMember[] = [
 const TeamGrid = () => {
   return (
     <div className="bg-white py-12 px-14 sm:px-12 lg:px-16">
-      <div className="font-[Poppins] font-semibold text-[46px] leading-[54px] tracking-[0px] text-center px-32 mb-10">
+      <div className="  font-semibold text-[46px] leading-[54px] tracking-[0px] text-center px-32 mb-10">
         The passionate minds shaping the future of our company
       </div>
       <div className="max-w-7xl mx-auto grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-8">

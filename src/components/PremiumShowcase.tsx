@@ -24,7 +24,7 @@ export default function PremiumShowcase() {
             Opulence Modular Set
           </h2>
 
-          <h3 className="font-[Poppins] text-sm sm:text-base font-medium underline underline-offset-[2px]">
+          <h3 className="  text-sm sm:text-base font-medium underline underline-offset-[2px]">
             Description
           </h3>
 

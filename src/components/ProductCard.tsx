@@ -82,10 +82,10 @@ export default function ProductCard({ product }: { product: Product }) {
       <div className="flex items-center justify-between">
         <div>
           <div className="flex items-end gap-2">
-            <span className="font-[Poppins] font-extrabold text-lg text-gray-900 tracking-tight">
+            <span className="  font-extrabold text-lg text-gray-900 tracking-tight">
               ₹{discountedPrice.toLocaleString()}
             </span>
-            <span className="text-sm text-gray-400 font-[Poppins] line-through">
+            <span className="text-sm text-gray-400   line-through">
               ₹{product.price.toLocaleString()}
             </span>
           </div>
@@ -96,7 +96,7 @@ export default function ProductCard({ product }: { product: Product }) {
           </div>
         </div>
         <button
-          className="px-5 py-2 rounded-md text-xs bg-blue-600 text-white font-[Poppins] font-semibold shadow-lg 
+          className="px-5 py-2 rounded-md text-xs bg-blue-600 text-white   font-semibold shadow-lg 
                      transition-transform duration-200 hover:shadow-xl hover:scale-105 active:scale-95"
           aria-label={`Add ${product.name} to cart`}
         >

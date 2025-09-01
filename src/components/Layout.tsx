@@ -10,7 +10,7 @@ interface LayoutProps {
 
 const Layout = ({ children }: LayoutProps) => {
   return (
-    <div className="flex flex-col h-full w-full ">
+    <div className="flex flex-col h-full w-full font-[IBM_Plex_Sans,sans-serif]">
       <Header />
       {children}
     </div>
