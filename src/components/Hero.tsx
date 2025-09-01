@@ -12,8 +12,10 @@ import BarImage2 from "../assets/BarImage2.png";
 import BarImage3 from "../assets/BarImage3.png";
 import BarImage4 from "../assets/BarImage4.png";
 import BarImage5 from "../assets/BarImage5.png";
+import BarImage6 from "../assets/BarImage6.png";
 
-const barImages = [BarImage1, BarImage2, BarImage3, BarImage4, BarImage5];
+
+const barImages = [BarImage1, BarImage2, BarImage3, BarImage4, BarImage5 , BarImage6];
 
 const Hero = () => {
   const navigate = useNavigate();
@@ -34,12 +36,12 @@ const Hero = () => {
           <img
             src={HeroImage2}
             alt="Top Middle"
-            className="w-full h-1/3 object-cover rounded-lg shadow-md "
+            className="w-full h-[30%] object-cover rounded-lg shadow-md "
           />
 
           {/* Center Box (Text + CTA) */}
-          <div className="w-full h-1/2 sm:p-6 p-4 justify-center items-center text-center flex flex-col gap-4 bg-white/80">
-            <p className="font-semibold text-3xl sm:text-4xl md:text-3xl ">
+          <div className="w-full h-[40%]  justify-center items-center text-center flex flex-col gap-4 bg-white/80">
+            <p className="font-semibold text-3xl sm:text-4xl md:text-4xl ">
               Where Everyday Living Meets Timeless Luxury.
             </p>
             <p className="text-sm sm:text-base md:text-base font-normal uppercase text-gray-600">
@@ -59,11 +61,11 @@ const Hero = () => {
             <img
               src={HeroImage3}
               alt="Bottom Middle"
-              className="w-full h-1/3 object-cover rounded-lg shadow-md"
+              className="w-full h-[30%] object-cover rounded-lg shadow-md"
             />
         </div>
 
-        <div className="w-full lg:w-1/3 flex ">
+        <div className="w-full lg:w-1/4 flex ">
           <img
             src={HeroImage4}
             alt="Right"
@@ -72,13 +74,13 @@ const Hero = () => {
         </div>
       </div>
 
-      <div className="w-full flex flex-wrap justify-center items-center gap-8 sm:gap-16 md:gap-24 px-4 sm:px-6 md:px-10 py-10 bg-gray-50 rounded-lg">
+      <div className="w-full flex flex-wrap justify-center items-center gap-8 sm:gap-16 md:gap-24 px-4 sm:px-6 md:px-10 py-10  rounded-lg">
         {barImages.map((img, i) => (
           <img
             key={i}
             src={img}
             alt={`Bar Image ${i + 1}`}
-            className="h-6 sm:h-8 md:h-10 object-contain"
+            className="h-6 sm:h-8 md:h-8 object-contain"
           />
         ))}
       </div>
