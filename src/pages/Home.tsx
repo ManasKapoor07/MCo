@@ -4,15 +4,16 @@ import CustomerTestimonials from "@/components/CustomerTestimonials";
 import Newsletter from "@/components/Newsletter";
 import Footer from "@/components/Footer";
 import ProductLisitng from "@/components/ProductLisitng";
+import BathroomGallery from "@/components/BathroomGallery";
 
 const Home = () => {
   return (
     <div className="flex flex-col h-full w-full">
       <Hero />
       <PremiumShowcase />
-      <ProductLisitng />
-      <CustomerTestimonials />
-      <Newsletter />
+      <BathroomGallery />
+      {/* <ProductLisitng /> */}
+      {/* <Newsletter /> */}
       <Footer />
     </div>
   );

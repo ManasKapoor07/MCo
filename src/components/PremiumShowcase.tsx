@@ -6,8 +6,8 @@ import img4 from "../assets/category4.svg";
 
 export default function PremiumShowcase() {
   return (
-    <section className="py-12 px-4 sm:px-6 lg:px-12 ">
-      <div className="mx-auto">
+    <section className="py-12">
+      <div className="">
         {/* Title & Subtitle */}
         <div className="text-center mb-10">
           <h2 className="text-2xl sm:text-3xl md:text-4xl font-semibold text-gray-900 mb-2">
@@ -19,7 +19,7 @@ export default function PremiumShowcase() {
           </p>
         </div>
 
-        <div className="flex gap-5 justify-center items-center">
+        <div className="flex gap-5 w-full justify-center items-center">
           <div className="bg-white rounded-lg hover:cursor-pointer overflow-hidden shadow-md relative group">
             <img
               src={img1}

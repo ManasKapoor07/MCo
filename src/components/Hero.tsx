@@ -41,12 +41,12 @@ const Hero = () => {
 
           {/* Center Box (Text + CTA) */}
           <div className="w-full h-[40%]  justify-center items-center text-center flex flex-col gap-4 bg-white/80">
-            <p className="font-semibold text-3xl sm:text-4xl md:text-4xl ">
+            <p className="font-semibold tracking-[4%] text-3xl sm:text-4xl md:text-[42px] ">
               Where Everyday Living Meets Timeless Luxury.
             </p>
-            <p className="text-sm sm:text-base md:text-base font-normal uppercase text-gray-600">
-              Experience innovation, style, and quality built to last for
-              generations.
+            <p className="text-sm  tracking-[3px] sm:text-base md:text-[18px] font-medium  text-gray-600">
+              Experience Innovation, Style, And Quality Built To Last For
+              Generations.
             </p>
             <Button
               size="lg"
