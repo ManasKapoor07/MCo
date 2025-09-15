@@ -12,11 +12,25 @@ const priceRange = { min: 7000, max: 13000 };
 
 // --- Product Card ---
 function ProductCard({ product, isFav, onFav, onClick }) {
+  const [isMobile, setIsMobile] = useState(
+    typeof window !== "undefined" ? window.innerWidth < 768 : false
+  );
+
+  // Listen for window resize to update isMobile
+  useEffect(() => {
+    const handleResize = () => setIsMobile(window.innerWidth < 768);
+    window.addEventListener("resize", handleResize);
+    return () => window.removeEventListener("resize", handleResize);
+  }, []);
+
   return (
     <div
       className="rounded-md overflow-hidden cursor-pointer flex flex-col group transition-shadow"
       style={{ width: "100%", minWidth: 180, maxWidth: 280 }}
-      onClick={onClick}
+      onClick={() => {
+        // On mobile, clicking card navigates as usual. If you want different, modify here.
+        onClick();
+      }}
     >
       <div className="relative">
         <img
@@ -26,10 +40,61 @@ function ProductCard({ product, isFav, onFav, onClick }) {
           style={{ aspectRatio: "4/3" }}
           draggable={false}
         />
-        {/* Overlay on hover */}
-        <div className="absolute inset-0 flex flex-col rounded-md items-center justify-center opacity-0 group-hover:opacity-100 transition bg-black/40 z-10">
+        {/* Overlay only on desktop */}
+        {!isMobile && (
+          <div className="absolute inset-0 flex flex-col rounded-md items-center justify-center bg-black/40 z-10 opacity-0 group-hover:opacity-100 transition-opacity">
+            <button
+              className="mb-3 hover:cursor-pointer px-6 py-2 rounded shadow bg-white text-blue-700 font-semibold text-sm sm:text-base"
+              onClick={(e) => {
+                e.stopPropagation();
+                /* add to cart logic */
+              }}
+            >
+              Add to cart
+            </button>
+            <div className="flex items-center gap-4 sm:gap-6 mb-2">
+              <button
+                onClick={(e) => e.stopPropagation()}
+                className="group/icon flex items-center gap-1 text-white text-xs sm:text-sm hover:text-blue-400 transition"
+              >
+                <Share2 size={16} className="group-hover/icon:text-blue-400" />
+                <span>Share</span>
+              </button>
+              <button
+                onClick={(e) => e.stopPropagation()}
+                className="group/icon flex items-center gap-1 text-white text-xs sm:text-sm hover:text-blue-400 transition"
+              >
+                <Repeat2 size={16} className="group-hover/icon:text-blue-400" />
+                <span>Compare</span>
+              </button>
+              <button
+                onClick={(e) => {
+                  e.stopPropagation();
+                  onFav(product.id);
+                }}
+                className="group/icon flex items-center gap-1 text-white text-xs sm:text-sm hover:text-blue-400 transition"
+              >
+                <Heart
+                  size={16}
+                  className={
+                    isFav
+                      ? "fill-red-500 text-red-500"
+                      : "text-white group-hover/icon:text-blue-400"
+                  }
+                  fill={isFav ? "#ef4444" : "none"}
+                />
+                <span>Like</span>
+              </button>
+            </div>
+          </div>
+        )}
+      </div>
+
+      {/* Actions always visible below image on mobile */}
+      {isMobile && (
+        <div className="flex items-center gap-4 sm:gap-6 mt-2 px-1">
           <button
-            className="mb-3 hover:cursor-pointer px-6 py-2 rounded shadow bg-white text-blue-700 font-semibold text-sm sm:text-base"
+            className="px-3 py-1 rounded bg-blue-600 text-white text-sm font-semibold flex-1"
             onClick={(e) => {
               e.stopPropagation();
               /* add to cart logic */
@@ -37,42 +102,36 @@ function ProductCard({ product, isFav, onFav, onClick }) {
           >
             Add to cart
           </button>
-          <div className="flex items-center gap-4 sm:gap-6 mb-2">
-            <button
-              onClick={(e) => e.stopPropagation()}
-              className="group/icon flex items-center gap-1 text-white text-xs sm:text-sm hover:text-blue-400 transition"
-            >
-              <Share2 size={16} className="group-hover/icon:text-blue-400" />
-              <span>Share</span>
-            </button>
-            <button
-              onClick={(e) => e.stopPropagation()}
-              className="group/icon flex items-center gap-1 text-white text-xs sm:text-sm hover:text-blue-400 transition"
-            >
-              <Repeat2 size={16} className="group-hover/icon:text-blue-400" />
-              <span>Compare</span>
-            </button>
-            <button
-              onClick={(e) => {
-                e.stopPropagation();
-                onFav(product.id);
-              }}
-              className="group/icon flex items-center gap-1 text-white text-xs sm:text-sm hover:text-blue-400 transition"
-            >
-              <Heart
-                size={16}
-                className={
-                  isFav
-                    ? "fill-red-500 text-red-500"
-                    : "text-white group-hover/icon:text-blue-400"
-                }
-                fill={isFav ? "#ef4444" : "none"}
-              />
-              <span>Like</span>
-            </button>
-          </div>
+          {/* <button
+            onClick={(e) => e.stopPropagation()}
+            className="flex items-center gap-1 text-blue-600 text-sm font-medium"
+            type="button"
+          >
+            <Share2 size={16} /> <span>Share</span>
+          </button> */}
+          {/* <button
+            onClick={(e) => e.stopPropagation()}
+            className="flex items-center gap-1 text-blue-600 text-sm font-medium"
+            type="button"
+          >
+            <Repeat2 size={16} /> <span>Compare</span>
+          </button> */}
+          <button
+            onClick={(e) => {
+              e.stopPropagation();
+              onFav(product.id);
+            }}
+            className={`flex items-center gap-1 text-sm font-medium ${
+              isFav ? "text-red-600" : "text-gray-600"
+            }`}
+            type="button"
+          >
+            <Heart size={16} fill={isFav ? "#ef4444" : "none"} />{" "}
+            <span>Like</span>
+          </button>
         </div>
-      </div>
+      )}
+
       {/* Bottom bar */}
       <div className="flex items-end justify-between px-3 pt-2 pb-3 gap-2">
         <div className="flex flex-col flex-1 min-w-0">
@@ -155,7 +214,7 @@ export default function BestShop() {
   }, [getProduct, page, filters, priceValue, tab]);
 
   useEffect(() => {
-    if ( Array.isArray(data)) {
+    if (Array.isArray(data)) {
       const mapped = data.map((item, idx) => ({
         id: item.id ?? idx,
         name: item.name,
@@ -362,22 +421,24 @@ export default function BestShop() {
           </div>
 
           {/* Product Grid */}
-          <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-3 xl:grid-cols-3 gap-4 sm:gap-6">
-            {products.length > 0 ? (
-              products.map((p) => (
-                <ProductCard
-                  key={p.id}
-                  product={p}
-                  isFav={favourites.includes(p.id)}
-                  onFav={toggleFavourite}
-                  onClick={() => navigate(`/product/${p.id}`)}
-                />
-              ))
-            ) : (
-              <p className="text-gray-600 text-center col-span-full mt-24 text-lg font-medium">
-                {isLoading ? "Loading products..." : "No products found."}
-              </p>
-            )}
+          <div className="w-full justify-center items-center bg-white">
+            <div className="grid grid-cols-2 md:grid-cols-3 gap-4 sm:gap-6 w-full">
+              {products.length > 0 ? (
+                products.map((p) => (
+                  <ProductCard
+                    key={p.id}
+                    product={p}
+                    isFav={favourites.includes(p.id)}
+                    onFav={toggleFavourite}
+                    onClick={() => navigate(`/product/${p.id}`)}
+                  />
+                ))
+              ) : (
+                <p className="text-gray-600 text-center col-span-full mt-24 text-lg font-medium">
+                  {isLoading ? "Loading products..." : "No products found."}
+                </p>
+              )}
+            </div>
           </div>
         </main>
       </div>
