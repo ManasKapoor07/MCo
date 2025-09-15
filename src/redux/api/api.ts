@@ -5,7 +5,7 @@ const allApi = apiReducer.injectEndpoints({
   endpoints: (builder) => ({
     products: builder.query({
       query: (params) => ({
-        url: "/products/",
+        url: "/listing/products/",
         method: "GET",
         params: params,
         headers: {
