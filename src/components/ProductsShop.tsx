@@ -4,6 +4,12 @@ import { useNavigate, useSearchParams } from "react-router-dom";
 import sink from "../assets/PremiumShowcase.png";
 import { useLazyProductsQuery } from "@/redux/api/api";
 
+// Dummy data options
+const brands = ["Kohler", "Cera", "Johnson", "Jaquar", "Ruhe"];
+const colors = ["#FFFFFF", "#000000", "#6B7280", "#0EA5E9", "#3B82F6"];
+const finishTypes = ["Glossy White", "Matte", "Black", "Sand", "Custom"];
+const priceRange = { min: 7000, max: 13000 };
+
 // --- Product Card ---
 function ProductCard({ product, isFav, onFav, onClick }) {
   return (
@@ -90,19 +96,19 @@ export default function BestShop() {
   const [searchParams, setSearchParams] = useSearchParams();
   const navigate = useNavigate();
 
-  // State
+  // State as before
   const [tempFilters, setTempFilters] = useState({
     brands: new Set(),
     finish: new Set(),
     colors: new Set(),
   });
-  const [tempPriceValue, setTempPriceValue] = useState(null);
+  const [tempPriceValue, setTempPriceValue] = useState(priceRange.max);
   const [filters, setFilters] = useState({
     brands: new Set(),
     finish: new Set(),
     colors: new Set(),
   });
-  const [priceValue, setPriceValue] = useState(null);
+  const [priceValue, setPriceValue] = useState(priceRange.max);
   const [tab, setTab] = useState("new");
   const [products, setProducts] = useState([]);
   const [favourites, setFavourites] = useState([]);
@@ -119,9 +125,9 @@ export default function BestShop() {
       colors: new Set(searchParams.getAll("color")),
     };
     setFilters(newFilters);
-    setPriceValue(Number(searchParams.get("maxPrice")) || null);
+    setPriceValue(Number(searchParams.get("maxPrice")) || priceRange.max);
     setTempFilters(newFilters);
-    setTempPriceValue(Number(searchParams.get("maxPrice")) || null);
+    setTempPriceValue(Number(searchParams.get("maxPrice")) || priceRange.max);
     setPage(Number(searchParams.get("page")) || 1);
   }, [searchParams]);
 
@@ -132,7 +138,7 @@ export default function BestShop() {
     filters.brands.forEach((b) => params.append("brand", b));
     filters.finish.forEach((f) => params.append("finish", f));
     filters.colors.forEach((c) => params.append("color", c));
-    if (priceValue) params.append("maxPrice", priceValue);
+    params.append("maxPrice", priceValue);
     params.append("tab", tab);
 
     const query = {};
@@ -149,13 +155,16 @@ export default function BestShop() {
   }, [getProduct, page, filters, priceValue, tab]);
 
   useEffect(() => {
-    if (data?.success && Array.isArray(data.data)) {
-      const mapped = data.data.map((item, idx) => ({
+    if ( Array.isArray(data)) {
+      const mapped = data.map((item, idx) => ({
         id: item.id ?? idx,
-        name: item.product_name,
-        price: item.price,
-        image: sink,
-        brand: item.company ?? "Brand",
+        name: item.name,
+        price: Number(item.price),
+        image: item.images && item.images.length > 0 ? item.images[0] : sink,
+        brand: item.brand?.name ?? "Brand",
+        slug: item.slug,
+        stockQuantity: item.stock_quantity,
+        available: item.available,
       }));
       setProducts(mapped);
     }
@@ -171,7 +180,7 @@ export default function BestShop() {
 
   const clearTempFilters = () => {
     setTempFilters({ brands: new Set(), finish: new Set(), colors: new Set() });
-    setTempPriceValue(null);
+    setTempPriceValue(priceRange.max);
     setSearchParams({});
   };
 
@@ -190,7 +199,7 @@ export default function BestShop() {
     tempFilters.brands.forEach((b) => params.append("brand", b));
     tempFilters.finish.forEach((f) => params.append("finish", f));
     tempFilters.colors.forEach((c) => params.append("color", c));
-    if (tempPriceValue) params.append("maxPrice", tempPriceValue);
+    params.append("maxPrice", tempPriceValue);
     params.append("tab", tab);
     setSearchParams(params);
     setShowFilters(false); // close sidebar on mobile
@@ -217,18 +226,88 @@ export default function BestShop() {
 
           {/* Filters content */}
           <div className="space-y-8">
-            {/* Example filter inputs - replace with dynamic API-driven filters */}
             <section>
               <div className="text-xs font-bold text-gray-700 uppercase mb-3 tracking-wider">
                 Price
               </div>
               <input
-                type="number"
-                value={tempPriceValue ?? ""}
+                type="range"
+                min={priceRange.min}
+                max={priceRange.max}
+                step={100}
+                value={tempPriceValue}
                 onChange={(e) => setTempPriceValue(Number(e.target.value))}
-                placeholder="Enter max price"
-                className="w-full border rounded px-2 py-1 text-sm"
+                className="w-full accent-blue-600"
               />
+              <div className="flex justify-between text-xs mt-2 font-medium text-gray-600">
+                <span>₹ {priceRange.min}</span>
+                <span>₹ {tempPriceValue}</span>
+              </div>
+            </section>
+
+            <section>
+              <div className="text-xs font-bold text-gray-700 uppercase mb-3 tracking-wider">
+                Brands
+              </div>
+              <ul className="space-y-2">
+                {brands.map((b) => (
+                  <li key={b} className="flex items-center gap-2">
+                    <input
+                      type="checkbox"
+                      checked={tempFilters.brands.has(b)}
+                      onChange={() => toggleTempFilter("brands", b)}
+                      className="accent-blue-600 border-gray-300 rounded"
+                    />
+                    <span className="text-sm text-gray-800">{b}</span>
+                  </li>
+                ))}
+              </ul>
+            </section>
+
+            <section>
+              <div className="text-xs font-bold text-gray-700 uppercase mb-3 tracking-wider">
+                Finish Type
+              </div>
+              <ul className="space-y-2">
+                {finishTypes.map((f) => (
+                  <li key={f} className="flex items-center gap-2">
+                    <input
+                      type="checkbox"
+                      checked={tempFilters.finish.has(f)}
+                      onChange={() => toggleTempFilter("finish", f)}
+                      className="accent-blue-600 border-gray-300 rounded"
+                    />
+                    <span className="text-sm text-gray-800">{f}</span>
+                  </li>
+                ))}
+              </ul>
+            </section>
+
+            <section>
+              <div className="text-xs font-bold text-gray-700 uppercase mb-3 tracking-wider">
+                Colors
+              </div>
+              <div className="flex gap-2 flex-wrap">
+                {colors.map((col) => (
+                  <button
+                    key={col}
+                    type="button"
+                    onClick={() => toggleTempFilter("colors", col)}
+                    className={`w-6 h-6 rounded-full border transition ${
+                      tempFilters.colors.has(col)
+                        ? "border-blue-600 ring-2 ring-blue-200"
+                        : "border-gray-300"
+                    } flex items-center justify-center`}
+                    style={{ backgroundColor: col }}
+                  >
+                    {tempFilters.colors.has(col) && (
+                      <span className="text-[11px] text-white font-bold select-none">
+                        ✓
+                      </span>
+                    )}
+                  </button>
+                ))}
+              </div>
             </section>
 
             <div className="flex gap-3">
