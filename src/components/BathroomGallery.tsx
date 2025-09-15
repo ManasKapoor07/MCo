@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { ArrowRight } from "lucide-react";
 import img1 from "../assets/carousel1.png";
 import img2 from "../assets/carousel2.png";
@@ -39,14 +39,24 @@ function mod(n, m) {
 export default function BathroomGallery() {
   const [index, setIndex] = useState(0);
 
+  // Automatic slide effect
+  useEffect(() => {
+    const intervalId = setInterval(() => {
+      setIndex((i) => (i + 1) % styles.length);
+    }, 3000); // Change slide every 3 seconds
+
+    // Cleanup interval on unmount or index change
+    return () => clearInterval(intervalId);
+  }, []);
+
   const next = mod(index + 1, styles.length);
   const next2 = mod(index + 2, styles.length);
 
   return (
-    <div className="flex flex-col md:flex-row overflow-hidden justify-between items-center w-full mx-auto mb-10 px-4 md:px-10 py-10">
+    <div className="flex flex-col md:flex-row overflow-hidden justify-between items-center w-full  mb-10 px-4 md:px-10 py-2">
       {/* Left Section */}
-      <div className="w-full md:w-[40%] flex flex-col px-4 md:px-10 mb-8 md:mb-0">
-        <h2 className="text-2xl sm:text-3xl font-bold leading-snug text-gray-900 mb-4">
+      <div className="w-full md:w-[40%] px-10 flex flex-col ">
+        <h2 className="text-2xl sm:text-3xl  font-bold text-gray-900 mb-4">
           From Modern Minimal to <br />
           Timeless Classic — <br />
           Explore Bathroom Styles
