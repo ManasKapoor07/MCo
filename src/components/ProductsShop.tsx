@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import { Heart, Share2, Repeat2, SlidersHorizontal, X } from "lucide-react";
 import { useNavigate, useSearchParams } from "react-router-dom";
-import sink from "../assets/PremiumShowcase.png";
+import sink from "../assets/product1.svg";
 import { useLazyProductsQuery } from "@/redux/api/api";
 
 // Dummy data options
@@ -12,6 +12,8 @@ const priceRange = { min: 7000, max: 13000 };
 
 // --- Product Card ---
 function ProductCard({ product, isFav, onFav, onClick }) {
+  console.log(product.image?.image_url);
+  
   const [isMobile, setIsMobile] = useState(
     typeof window !== "undefined" ? window.innerWidth < 768 : false
   );
@@ -25,7 +27,7 @@ function ProductCard({ product, isFav, onFav, onClick }) {
 
   return (
     <div
-      className="rounded-md overflow-hidden cursor-pointer flex flex-col group transition-shadow"
+      className="rounded-t-md p-2 shadow-xl  overflow-hidden cursor-pointer flex flex-col group transition-shadow"
       style={{ width: "100%", minWidth: 180, maxWidth: 280 }}
       onClick={() => {
         // On mobile, clicking card navigates as usual. If you want different, modify here.
@@ -34,9 +36,9 @@ function ProductCard({ product, isFav, onFav, onClick }) {
     >
       <div className="relative">
         <img
-          src={product.image}
+          src={product.image?.image_url || sink}
           alt={product.name}
-          className="w-full h-[320px] sm:h-[370px] object-cover bg-gray-50 rounded-md"
+          className="w-full h-[320px] sm:h-[370px] object-cover bg-gray-50 rounded-t-md"
           style={{ aspectRatio: "4/3" }}
           draggable={false}
         />
@@ -133,7 +135,7 @@ function ProductCard({ product, isFav, onFav, onClick }) {
       )}
 
       {/* Bottom bar */}
-      <div className="flex items-end justify-between px-3 pt-2 pb-3 gap-2">
+      <div className="flex items-end justify-between px-4 pt-2 pb-3 gap-2">
         <div className="flex flex-col flex-1 min-w-0">
           <span className="block text-sm font-semibold text-gray-900 truncate">
             {product.name}
