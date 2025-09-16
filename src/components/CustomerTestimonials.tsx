@@ -25,7 +25,6 @@ export default function CustomerTestimonials() {
   const pageCount = Math.ceil(testimonials.length / itemsPerPage);
   const [page, setPage] = useState(0);
 
-  // autoplay every 5s
   useEffect(() => {
     const timer = setInterval(() => {
       setPage((p) => (p + 1) % pageCount);
@@ -38,7 +37,7 @@ export default function CustomerTestimonials() {
   );
 
   return (
-    <section className="py-12 sm:py-16 bg-slate-50">
+    <section className="py-10">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* Header */}
         <div className="text-center mb-10 sm:mb-12">
@@ -46,9 +45,7 @@ export default function CustomerTestimonials() {
             Hear It from Our Happy Clients
           </h2>
           <p className="text-base sm:text-lg text-slate-600 max-w-3xl mx-auto">
-            We believe every product should speak for itself — but when it
-            doesn’t, our customers do. Explore the stories and praise from
-            people who chose us for their most personal spaces.
+            We believe every product should speak for itself — but when it doesn’t, our customers do. Explore the stories and praise from people who chose us for their most personal spaces.
           </p>
         </div>
 
@@ -64,51 +61,61 @@ export default function CustomerTestimonials() {
             {pages.map((group, idx) => (
               <div
                 key={idx}
-                className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8 flex-shrink-0"
+                className="grid grid-cols-1 sm:grid-cols-2 my-10 lg:grid-cols-3 gap-6 sm:gap-8 flex-shrink-0"
                 style={{ width: `${100 / pageCount}%` }}
               >
-                {group.map((t) => (
-                  <div
-                    key={t.id}
-                    className="bg-white rounded-xl p-5 sm:p-6 shadow-md hover:shadow-lg transition-shadow duration-300 flex flex-col"
-                  >
-                    <p className="text-slate-600 mb-6 italic flex-1 text-sm sm:text-base leading-relaxed">
-                      “{t.content}”
-                    </p>
-                    <div className="flex items-center mt-auto">
-                      <img
-                        src={t.avatar}
-                        alt={t.name}
-                        className="w-12 h-12 rounded-full object-cover mr-4"
-                      />
-                      <div>
-                        <div className="font-semibold text-slate-900">
-                          {t.name}
-                        </div>
-                        <div className="text-sm text-slate-500">
-                          {t.role}
-                        </div>
-                      </div>
+                {group.map((t, i) => {
+                  // Center index in the visible group (for 3 items, center is i === 1)
+                  const centerIdx = Math.floor(itemsPerPage / 2);
+
+                  // Enlarged card style
+                  const enlarged = i === centerIdx
+                    ? "scale-105  border-blue-600 shadow-xl z-50"
+                    : "scale-95 opacity-90";
+
+                  return (
+                    <div
+                      key={t.id}
+                      className={`rounded-xl p-5 sm:p-10 shadow-md hover:shadow-lg transition-all duration-300 flex flex-col
+                        transform ${enlarged}`}
+                    >
+                      <cite className="flex items-center mt-auto w-full justify-center mb-4 not-italic">
+                        <img
+                          src={t.avatar}
+                          alt={t.name}
+                          loading="lazy"
+                          className="w-12 h-12 rounded-full object-cover mr-4 border border-slate-200"
+                        />
+                        <span>
+                          <span className="text-slate-900 font-bold">
+                            {t.name}
+                          </span>
+                          <span className="text-sm text-slate-500 block">{t.role}</span>
+                        </span>
+                      </cite>
+                      <blockquote className="text-slate-600 mb-6 italic flex-1 text-sm sm:text-base leading-relaxed">
+                        “{t.content}”
+                      </blockquote>
                     </div>
-                  </div>
-                ))}
+                  );
+                })}
               </div>
             ))}
           </div>
         </div>
 
-        {/* Dots */}
+        {/* Dots Navigation */}
         <div className="flex justify-center space-x-2 mt-6">
           {pages.map((_, idx) => (
             <button
               key={idx}
               onClick={() => setPage(idx)}
               aria-label={`Go to testimonials page ${idx + 1}`}
-              className={`w-3 h-3 sm:w-4 sm:h-4 rounded-full transition-colors duration-300 ${
-                idx === page
+              className={`w-3 h-3 sm:w-4 sm:h-4 rounded-full transition-colors duration-300 border-2 border-transparent
+                ${idx === page
                   ? "bg-blue-700"
-                  : "bg-slate-400 hover:bg-slate-600"
-              }`}
+                  : "bg-slate-400 hover:bg-slate-600"}
+                focus:outline-none focus:ring-2 focus:ring-blue-500`}
             />
           ))}
         </div>

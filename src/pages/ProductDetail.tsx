@@ -1,10 +1,10 @@
 import Newsletter from '@/components/Newsletter';
 import Footer from '@/components/Footer';
-import ProductContent from '@/components/ProductContent';
+// import ProductContent from '@/components/ProductContent';
 const ProductDetail = () => {
     return(
         <div>
-            <ProductContent />
+            {/* <ProductContent /> */}
             {/* <Newsletter /> */}
             <Footer />
         </div>

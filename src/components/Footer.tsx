@@ -3,7 +3,7 @@ import logoMc from "../assets/logoP2.svg";
 
 export default function Footer() {
   return (
-    <footer className="bg-[#F2F8FF] w-full pt-12 pb-6 px-4 sm:px-6 lg:px-8">
+    <footer className=" w-full pt-12 pb-6 px-4 sm:px-6 lg:px-8">
       <div className="">
         {/* Main footer content */}
         <div className="flex flex-col md:flex-row md:items-center md:justify-between mb-8 gap-6">

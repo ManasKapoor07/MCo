@@ -14,73 +14,81 @@ import BarImage4 from "../assets/BarImage4.png";
 import BarImage5 from "../assets/BarImage5.png";
 import BarImage6 from "../assets/BarImage6.png";
 
-
-const barImages = [BarImage1, BarImage2, BarImage3, BarImage4, BarImage5 , BarImage6];
+const barImages = [
+  BarImage1,
+  BarImage2,
+  BarImage3,
+  BarImage4,
+  BarImage5,
+  BarImage6,
+];
 
 const Hero = () => {
   const navigate = useNavigate();
   return (
-    <div className="w-full flex flex-col ">
+    <div className="w-full flex flex-col">
       {/* Hero Section */}
-      <div className="w-full flex flex-col lg:flex-row px-4 sm:px-6 md:px-10 py-4 gap-6">
-        <div className="w-full lg:w-1/3 flex ">
+      <div className="w-full flex flex-col lg:flex-row px-2 sm:px-6 md:px-12 py-4 gap-4 md:gap-8">
+        <div className="w-full lg:w-1/3 flex">
           <img
             src={HeroImage1}
             alt="Left"
-            className="w-full lg:h-full h-48 object-cover rounded-lg shadow-lg"
+            loading="lazy"
+            className="w-full h-36 sm:h-56 md:h-72 lg:h-full object-cover rounded-lg shadow-lg"
           />
         </div>
-
-        <div className="w-full lg:w-1/3 flex flex-col ">
+        <div className="w-full lg:w-1/3 flex flex-col">
           {/* Top Image */}
           <img
             src={HeroImage2}
             alt="Top Middle"
-            className="w-full h-[30%] object-cover rounded-lg shadow-md "
-          />
+            loading="lazy"
 
+            className="w-full h-24 sm:h-28 md:h-32 lg:h-[30%] object-cover rounded-lg shadow-md"
+          />
           {/* Center Box (Text + CTA) */}
-          <div className="w-full h-[40%]  justify-center items-center text-center flex flex-col gap-4 bg-white/80">
-            <p className="font-semibold tracking-[4%] text-3xl sm:text-4xl md:text-[42px] ">
+          <div className="w-full flex-1 justify-center items-center text-center flex flex-col gap-4 p-3 sm:p-6 bg-white/80">
+            <p className="font-semibold tracking-wide text-2xl sm:text-3xl md:text-4xl lg:text-[42px]">
               Where Everyday Living Meets Timeless Luxury.
             </p>
-            <p className="text-sm  tracking-[3px] sm:text-base md:text-[18px] font-medium  text-gray-600">
+            <p className="text-xs sm:text-base md:text-lg font-medium text-gray-600">
               Experience Innovation, Style, And Quality Built To Last For
               Generations.
             </p>
             <Button
               size="lg"
               onClick={() => navigate("/shop")}
-              className="bg-blue-600 hover:shadow-md text-white font-semibold py-3 sm:py-4 px-6 sm:px-8 text-sm rounded-md shadow-blue-600 mt-2"
+              className="bg-blue-600 text-white font-semibold py-2 sm:py-3 px-4 sm:px-8 rounded-md shadow-blue-600 mt-2 hover:shadow-md"
             >
               Browse All Brands
             </Button>
           </div>
-
           {/* Bottom Image */}
-            <img
-              src={HeroImage3}
-              alt="Bottom Middle"
-              className="w-full h-[30%] object-cover rounded-lg shadow-md"
-            />
-        </div>
+          <img
+            src={HeroImage3}
+            alt="Bottom Middle"
+            loading="lazy"
 
-        <div className="w-full lg:w-1/4 flex ">
+            className="w-full h-16 sm:h-24 md:h-28 lg:h-[30%] object-cover rounded-lg shadow-md"
+          />
+        </div>
+        <div className="w-full lg:w-1/3 flex">
           <img
             src={HeroImage4}
             alt="Right"
-            className="w-full h-72 sm:h-96 lg:h-full object-cover rounded-lg shadow-lg"
+            loading="lazy"
+
+            className="w-full h-36 sm:h-56 md:h-72 lg:h-full object-cover rounded-lg shadow-lg"
           />
         </div>
       </div>
-
-      <div className="w-full flex flex-wrap justify-center items-center gap-8 sm:gap-16 md:gap-24 px-4 sm:px-6 md:px-10 py-10  rounded-lg">
+      <div className="w-full flex flex-wrap justify-center items-center gap-5 sm:gap-8 md:gap-12 lg:gap-16 px-2 sm:px-6 md:px-12 py-6 rounded-lg">
         {barImages.map((img, i) => (
           <img
             key={i}
             src={img}
             alt={`Bar Image ${i + 1}`}
-            className="h-6 sm:h-8 md:h-8 object-contain"
+            className="h-6 sm:h-8 md:h-10 object-contain"
           />
         ))}
       </div>

@@ -13,7 +13,9 @@ const Home = () => {
       <Hero />
       <PremiumShowcase />
       <BathroomGallery />
+      <ProductLisitng />
       <CanvasOfLuxuryCollage />
+      <CustomerTestimonials />
       {/* <Newsletter /> */}
       <Footer />
     </div>
